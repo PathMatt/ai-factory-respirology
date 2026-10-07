@@ -1,0 +1,38 @@
+[
+  {
+    "id": "pleura",
+    "label": "Pleural invasion \u00b7 present",
+    "width": 1515,
+    "height": 918,
+    "gaze": [
+      645.2825560097335,
+      322.7248501921813
+    ],
+    "src": "assets/inputs/pleura.png",
+    "frame": 10
+  },
+  {
+    "id": "micropapillary",
+    "label": "Micropapillary \u00b7 30%",
+    "width": 3358,
+    "height": 2035,
+    "gaze": [
+      1158.8506513775064,
+      1131.555066887311
+    ],
+    "src": "assets/inputs/micropapillary.png",
+    "frame": 10
+  },
+  {
+    "id": "complex",
+    "label": "Complex glands \u00b7 50%",
+    "width": 1861,
+    "height": 1128,
+    "gaze": [
+      539.5770936495355,
+      391.0938530847361
+    ],
+    "src": "assets/inputs/complex.png",
+    "frame": 10
+  }
+]

@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#06182a">
+  <title>Pneumoconiosis of Intelligence | Matt Cecchini, MD</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 fill=%27%2306182a%27/%3E%3Crect x=%2712%27 y=%2728%27 width=%2716%27 height=%2724%27 fill=%27%23b08d57%27/%3E%3Crect x=%2732%27 y=%2718%27 width=%2720%27 height=%2734%27 fill=%27%23c9a86a%27/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="assets/cp.css">
+  <link rel="stylesheet" href="assets/lung-case.css">
+  <link rel="stylesheet" href="assets/jev-cells/cell-finder.css">
+  <link rel="stylesheet" href="assets/jev-scan/jev-scan.css">
+  <link rel="stylesheet" href="assets/deck.css">
+</head>
+<body>
+  <main class="deck" id="deck" aria-live="off">
+
+    <!-- 1 · Title: animated factory, words rise from the stacks like dust -->
+    <section class="slide dark" id="title" data-build="0" data-notes="Good evening. Pneumoconiosis of intelligence. Tonight: what we've been building in pathology AI, and where it touches your patients.">
+      <div class="dust" aria-hidden="true"></div>
+      <div class="title-site" data-motif="art" aria-hidden="true"></div>
+      <div class="title-copy">
+        <h1>Pneumoconiosis of Intelligence</h1>
+        <p>Matt Cecchini, MD</p>
+      </div>
+    </section>
+
+    <!-- 2 · Workload (CP #4) -->
+    <section class="slide bleed" id="workload" data-build="0" data-notes="This is a cartoon, not me. But it's how the work feels: slides keep arriving, the desk keeps filling. The question is what we build to meet it.">
+      <p class="chapter">Workload pressures</p>
+      <video class="bleed-video" src="assets/video/workload-pressures.mp4" poster="assets/video/workload-pressures-poster.jpg" muted loop playsinline preload="auto" data-autoplay aria-label="A pathologist reviews slides while trays accumulate from the lab. Looping workload illustration."></video>
+    </section>
+
+    <!-- 3 · METR (CAP26 #4 / ai-augmented "current state") -->
+    <section class="slide" id="signal" data-build="0" data-notes="Something remarkable is happening. The length of task an AI system can complete has been doubling roughly every seven months.">
+      <p class="chapter">Basecamp | The signal</p>
+      <h2 class="fork-heading">Something remarkable is happening</h2>
+      <p class="one-line">Length of task an AI system can complete has been doubling roughly every seven months.</p>
+      <img class="metr-chart" src="assets/img/current-state-capability-METR.png" width="1406" height="1052" alt="METR time-horizon chart: length of tasks AI systems complete at 80% success, 2019 to 2026.">
+      <p class="foundation-source">METR</p>
+    </section>
+
+    <!-- 4 · Navier–Stokes (CP #8) -->
+    <section class="slide" id="navier-stokes" data-build="0" data-notes="A 90-year problem. OpenAI reports an AI-generated Navier–Stokes solution: 88 hours, about ten thousand coordinating agents. Reported result.">
+      <p class="chapter">The signal | mathematics</p>
+      <h2 class="fork-heading">A 90-year problem. A new frontier.</h2>
+      <img class="navier-image navier-reveal" style="--delay: 200ms" src="assets/figures/navier-stokes.jpeg" width="1200" height="1200" alt="Fluid trajectories spiralling inward and stretching along the vortex axis.">
+      <div class="navier-copy">
+        <p class="navier-intro navier-reveal" style="--delay: 500ms">Navier–Stokes<br>OpenAI reports an AI-generated solution.</p>
+        <div class="navier-metrics navier-reveal navier-last" style="--delay: 1300ms">
+          <p>88<span>hours</span></p>
+          <p>~10,000<span>coordinating AI agents</span></p>
+        </div>
+      </div>
+      <footer><a href="https://openai.com/index/navier-stokes-solution/" target="_blank" rel="noopener noreferrer">OpenAI · 8 September 2026 · reported result · Millennium Prize Problem</a></footer>
+    </section>
+
+    <!-- 5 · OpenAI 722 (new content per brief) -->
+    <section class="slide" id="math-722" data-build="0" data-notes="And this week: 722 mathematical manuscripts, in 372 families, from roughly four thousand problems posed to one internal model. Problems, not papers.">
+      <p class="chapter">The signal | mathematics</p>
+      <div class="big-figure">
+        <p class="big-number">722</p>
+        <p class="big-label">mathematical manuscripts</p>
+        <p class="big-line">372 families · from ~4,000 problems posed to an internal OpenAI model</p>
+      </div>
+      <p class="foundation-source">github.com/openai/math · New Scientist, 7 Oct 2026 · Scientific American, 6 Oct 2026</p>
+    </section>
+
+    <!-- 6 · Counting with eye gaze (CP #45) -->
+    <section class="slide input-slide" id="gaze-input" data-state="ready" data-build="1" data-notes="Start with how we interact. Look, select, count. No mouse, no hand on the desk.">
+      <p class="chapter">Interaction | eye gaze</p>
+      <h2 class="fork-heading">Counting with eye gaze</h2>
+      <p class="input-subtitle">Look. Select. Count.</p>
+      <div class="input-video-stage input-reveal input-last" style="--delay:200ms"><video class="input-main-video" data-video="assets/inputs/ergonomics-eye-gaze-counting.mp4" muted loop playsinline preload="none" aria-label="Counting with eye gaze demonstration"></video></div>
+      <footer class="input-source">Source: PPS deck · recorded demonstration</footer>
+    </section>
+
+    <!-- 7 · Eye tracking + dictation (CP #49) -->
+    <section class="slide input-slide" id="eye-tracking" data-state="ready" data-trace="true" data-build="1" data-notes="This is me going through a real case, at five times speed. Eye tracking captures where I look; dictation captures what I say. Both are recorded together.">
+      <p class="chapter">Interaction | gaze + dictation</p>
+      <h2 class="fork-heading">Eye tracking + dictation</h2>
+      <p class="input-subtitle">Capture what I see and what I say.</p>
+      <div class="input-video-stage input-reveal input-last" style="--delay:200ms"><video class="input-main-video" data-video="assets/inputs/eye-trace.mp4" muted playsinline controls preload="none" aria-label="Eye tracking + dictation demonstration"></video><span class="speed-badge">5×</span></div><p class="input-transcript" aria-label="Current recorded narration"></p>
+      <footer class="input-source">Source: PPS deck · recording at 5× speed</footer>
+    </section>
+
+    <!-- 8 · ViewMaster (CP #50) -->
+    <section class="slide input-slide" id="viewmaster" data-state="ready" data-build="1" data-notes="Because gaze and voice are linked, every finding in the report points back to the field I was looking at when I said it. Click a finding to see its field.">
+      <p class="chapter">Interaction | ViewMaster</p>
+      <h2 class="fork-heading">ViewMaster</h2>
+      <p class="input-subtitle">From a finding back to the field.</p>
+      <div class="input-vm-list input-reveal" style="--delay:400ms"><button type="button" data-evidence="pleura" aria-pressed="true">Pleural invasion · present</button><button type="button" data-evidence="micropapillary" aria-pressed="false">Micropapillary · 30%</button><button type="button" data-evidence="complex" aria-pressed="false">Complex glands · 50%</button></div><div class="input-vm-stage input-reveal input-last" style="--delay:1300ms"><svg viewBox="0 0 1515 918" role="img" aria-label="Recorded field supporting the selected report finding"><image href="assets/inputs/pleura.png" width="1515" height="918"/><circle class="input-gaze" cx="645.2826" cy="322.7249" r="25"/></svg><p class="input-vm-label">Recorded gaze</p></div>
+      <footer class="input-source">Source: ViewMaster report + linked recordings · <a href="assets/inputs/summary-report-updated.pdf" target="_blank" rel="noopener">Full report</a></footer>
+    </section>
+
+    <!-- 9 · Mitosis benchmark (CP #12) -->
+    <section class="slide" id="mitosis-benchmark" data-state="ready" data-build="2" data-notes="Perception. Six general models against 85 pathologists on 1,016 mitosis tiles. Best model 85.5 percent; pathologist median 86.8. Inside our range.">
+      <p class="chapter">Perception | mitosis</p>
+      <h2 class="fork-heading">Classifying mitotic figures</h2>
+      <p class="benchmark-subtitle">Minimal-prompt agreement with consensus</p>
+      <svg class="benchmark-chart" viewBox="0 0 1600 900" role="img" aria-labelledby="benchmark-description"><title id="benchmark-description">Model agreement: Claude Opus 5.5 85.54%, GPT-6 Astra 82.0%, Grok 4.6 81.3%, GPT-5.6 Sol 76.7%, Gemini 3.1 Pro 74.6%, Qwen3.8-FP8 local 58.3%. Pathologist median 86.8%; middle 50% 80.4 to 89.5%. 85 pathologists, 1,016 tiles.</title><g class="benchmark-reveal" style="--delay:200ms"><rect x="1127.64" y="260" width="151.06" height="469" fill="#667c7220"/><path d="M 1233.88 260 V 729" stroke="#667c72" stroke-width="1.5" stroke-dasharray="6 8"/></g><g class="benchmark-row benchmark-reveal" style="--delay:550ms"><text x="152" y="298">Claude Opus 5.5</text><path class="benchmark-guide" d="M 540 290 H 1370"/><circle cx="1212.96" cy="290" r="7" fill="#161616"/><text x="1460" y="298" text-anchor="end">85.54%</text></g><g class="benchmark-row benchmark-reveal" style="--delay:900ms"><text x="152" y="366">GPT-6 Astra</text><path class="benchmark-guide" d="M 540 358 H 1370"/><circle cx="1154.20" cy="358" r="7" fill="#161616"/><text x="1460" y="366" text-anchor="end">82.0%</text></g><g class="benchmark-row benchmark-reveal" style="--delay:1250ms"><text x="152" y="434">Grok 4.6</text><path class="benchmark-guide" d="M 540 426 H 1370"/><circle cx="1142.58" cy="426" r="7" fill="#161616"/><text x="1460" y="434" text-anchor="end">81.3%</text></g><g class="benchmark-row benchmark-reveal" style="--delay:1600ms"><text x="152" y="502">GPT-5.6 Sol</text><path class="benchmark-guide" d="M 540 494 H 1370"/><circle cx="1066.22" cy="494" r="7" fill="#161616"/><text x="1460" y="502" text-anchor="end">76.7%</text></g><g class="benchmark-row benchmark-reveal" style="--delay:1950ms"><text x="152" y="570">Gemini 3.1 Pro</text><path class="benchmark-guide" d="M 540 562 H 1370"/><circle cx="1031.36" cy="562" r="7" fill="#161616"/><text x="1460" y="570" text-anchor="end">74.6%</text></g><g class="benchmark-row benchmark-reveal" style="--delay:2300ms"><text x="152" y="638">Qwen3.8-FP8 local</text><path class="benchmark-guide" d="M 540 630 H 1370"/><circle cx="760.78" cy="630" r="7" fill="#161616"/><text x="1460" y="638" text-anchor="end">58.3%</text></g><g class="benchmark-row benchmark-reveal benchmark-last" style="--delay:2800ms"><text x="152" y="713">Pathologists (median)</text><path d="M 1127.64 705 H 1278.70" stroke="#667c72" stroke-width="7"/><circle cx="1233.88" cy="705" r="9" fill="#667c72"/><text x="1460" y="713" text-anchor="end">86.8%</text></g><path d="M 540 750 H 1370" fill="none" stroke="#161616" stroke-width="1.5"/><path d="M 540.00 750 v 8" stroke="#161616"/><text class="benchmark-small" x="540.00" y="783" text-anchor="middle">45</text><path d="M 706.00 750 v 8" stroke="#161616"/><text class="benchmark-small" x="706.00" y="783" text-anchor="middle">55</text><path d="M 872.00 750 v 8" stroke="#161616"/><text class="benchmark-small" x="872.00" y="783" text-anchor="middle">65</text><path d="M 1038.00 750 v 8" stroke="#161616"/><text class="benchmark-small" x="1038.00" y="783" text-anchor="middle">75</text><path d="M 1204.00 750 v 8" stroke="#161616"/><text class="benchmark-small" x="1204.00" y="783" text-anchor="middle">85</text><path d="M 1370.00 750 v 8" stroke="#161616"/><text class="benchmark-small" x="1370.00" y="783" text-anchor="middle">95</text><text class="benchmark-small" x="955" y="826" text-anchor="middle">Agreement with consensus (%)</text></svg>
+      <footer class="benchmark-note">85 pathologists · 1,016 tiles · majority-vote consensus<br>Shaded band: pathologist middle 50% (80.4–89.5%) · supplied benchmark</footer>
+    </section>
+
+    <!-- 10 · Foundation models (CP #20) -->
+    <section class="slide" id="foundation-models" data-state="ready" data-build="3" data-notes="Foundation models. The slide is cut into tiles; the model turns each tile into a vector of numbers. Train narrow tools on top of those vectors.">
+      <p class="chapter">Foundation | models</p>
+      <h2 class="fork-heading">Pathology foundation models</h2>
+      <svg class="foundation-picture" viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="foundation-heading" aria-describedby="foundation-description">
+        <desc id="foundation-description">A whole-slide image is divided into tiles. A foundation model, pretrained on large collections of pathology images, encodes each tile as an embedding, a vector of numbers representing learned image features. For example, Virchow was trained on 1.5 million slides. Embeddings and labelled examples can be used to train and validate tools for tumor detection, grading, molecular prediction and outcome prediction. The numeric vectors are illustrative.</desc>
+        <g aria-hidden="true">
+          <rect class="foundation-whole foundation-ink" x="219" y="289" width="182" height="272" fill="white"/>
+          <g class="foundation-tile" data-col="0" data-row="0" transform="translate(220 290)"><svg width="60" height="54" viewBox="0 0 60 54" overflow="hidden"><image href="assets/wsi/slide_files/8/0_0.jpg" x="0" y="0" width="180" height="270" preserveAspectRatio="xMidYMid meet"/></svg><rect width="60" height="54"/></g>
+          <g class="foundation-tile" data-col="1" data-row="0" transform="translate(280 290)"><svg width="60" height="54" viewBox="60 0 60 54" overflow="hidden"><image href="assets/wsi/slide_files/8/0_0.jpg" x="0" y="0" width="180" height="270" preserveAspectRatio="xMidYMid meet"/></svg><rect width="60" height="54"/></g>
+          <g class="foundation-tile" data-col="2" data-row="0" transform="translate(340 290)"><svg width="60" height="54" viewBox="120 0 60 54" overflow="hidden"><image href="assets/wsi/slide_files/8/0_0.jpg" x="0" y="0" width="180" height="270" preserveAspectRatio="xMidYMid meet"/></svg><rect width="60" height="54"/></g>
+          <g class="foundation-tile" data-col="0" data-row="1" transform="translate(220 344)"><svg width="60" height="54" viewBox="0 54 60 54" overflow="hidden"><image href="assets/wsi/slide_files/8/0_0.jpg" x="0" y="0" width="180" height="270" preserveAspectRatio="xMidYMid meet"/></svg><rect width="60" height="54"/></g>
+          <g class="foundation-tile" data-col="1" data-row="1" transform="translate(280 344)"><svg width="60" height="54" viewBox="60 54 60 54" overflow="hidden"><image href="assets/wsi/slide_files/8/0_0.jpg" x="0" y="0" width="180" height="270" preserveAspectRatio="xMidYMid meet"/></svg><rect width="60" height="54"/></g>
+          <g class="foundation-tile" data-col="2" data-row="1" transform="translate(340 344)"><svg width="60" height="54" viewBox="120 54 60 54" overflow="hidden"><image href="assets/wsi/slide_files/8/0_0.jpg" x="0" y="0" width="180" height="270" preserveAspectRatio="xMidYMid meet"/></svg><rect width="60" height="54"/></g>
+          <g class="foundation-tile" data-col="0" data-row="2" transform="translate(220 398)"><svg width="60" height="54" viewBox="0 108 60 54" overflow="hidden"><image href="assets/wsi/slide_files/8/0_0.jpg" x="0" y="0" width="180" height="270" preserveAspectRatio="xMidYMid meet"/></svg><rect width="60" height="54"/></g>
+          <g class="foundation-tile" data-col="1" data-row="2" transform="translate(280 398)"><svg width="60" height="54" viewBox="60 108 60 54" overflow="hidden"><image href="assets/wsi/slide_files/8/0_0.jpg" x="0" y="0" width="180" height="270" preserveAspectRatio="xMidYMid meet"/></svg><rect width="60" height="54"/></g>
+          <g class="foundation-tile" data-col="2" data-row="2" transform="translate(340 398)"><svg width="60" height="54" viewBox="120 108 60 54" overflow="hidden"><image href="assets/wsi/slide_files/8/0_0.jpg" x="0" y="0" width="180" height="270" preserveAspectRatio="xMidYMid meet"/></svg><rect width="60" height="54"/></g>
+          <g class="foundation-tile" data-col="0" data-row="3" transform="translate(220 452)"><svg width="60" height="54" viewBox="0 162 60 54" overflow="hidden"><image href="assets/wsi/slide_files/8/0_0.jpg" x="0" y="0" width="180" height="270" preserveAspectRatio="xMidYMid meet"/></svg><rect width="60" height="54"/></g>
+          <g class="foundation-tile" data-col="1" data-row="3" transform="translate(280 452)"><svg width="60" height="54" viewBox="60 162 60 54" overflow="hidden"><image href="assets/wsi/slide_files/8/0_0.jpg" x="0" y="0" width="180" height="270" preserveAspectRatio="xMidYMid meet"/></svg><rect width="60" height="54"/></g>
+          <g class="foundation-tile" data-col="2" data-row="3" transform="translate(340 452)"><svg width="60" height="54" viewBox="120 162 60 54" overflow="hidden"><image href="assets/wsi/slide_files/8/0_0.jpg" x="0" y="0" width="180" height="270" preserveAspectRatio="xMidYMid meet"/></svg><rect width="60" height="54"/></g>
+          <g class="foundation-tile" data-col="0" data-row="4" transform="translate(220 506)"><svg width="60" height="54" viewBox="0 216 60 54" overflow="hidden"><image href="assets/wsi/slide_files/8/0_0.jpg" x="0" y="0" width="180" height="270" preserveAspectRatio="xMidYMid meet"/></svg><rect width="60" height="54"/></g>
+          <g class="foundation-tile" data-col="1" data-row="4" transform="translate(280 506)"><svg width="60" height="54" viewBox="60 216 60 54" overflow="hidden"><image href="assets/wsi/slide_files/8/0_0.jpg" x="0" y="0" width="180" height="270" preserveAspectRatio="xMidYMid meet"/></svg><rect width="60" height="54"/></g>
+          <g class="foundation-tile" data-col="2" data-row="4" transform="translate(340 506)"><svg width="60" height="54" viewBox="120 216 60 54" overflow="hidden"><image href="assets/wsi/slide_files/8/0_0.jpg" x="0" y="0" width="180" height="270" preserveAspectRatio="xMidYMid meet"/></svg><rect width="60" height="54"/></g>
+          <text class="foundation-label foundation-slide-label" x="310" y="610">Whole-slide image</text>
+          <g class="foundation-model foundation-reveal">
+            <path class="foundation-ink" d="M 468 420 L 630 420 M 622 414 L 630 420 L 622 426"/>
+            <rect class="foundation-ink" x="647" y="325" width="210" height="187" rx="8"/>
+            <g class="foundation-ink" style="stroke-width:1;stroke-opacity:.23"><path d="M 688 374 L 752 374"/><path d="M 688 374 L 752 417"/><path d="M 688 374 L 752 460"/><path d="M 688 417 L 752 374"/><path d="M 688 417 L 752 417"/><path d="M 688 417 L 752 460"/><path d="M 688 460 L 752 374"/><path d="M 688 460 L 752 417"/><path d="M 688 460 L 752 460"/><path d="M 752 374 L 816 374"/><path d="M 752 374 L 816 417"/><path d="M 752 374 L 816 460"/><path d="M 752 417 L 816 374"/><path d="M 752 417 L 816 417"/><path d="M 752 417 L 816 460"/><path d="M 752 460 L 816 374"/><path d="M 752 460 L 816 417"/><path d="M 752 460 L 816 460"/></g>
+            <g class="foundation-ink foundation-nodes"><circle cx="688" cy="374" r="7" fill="var(--paper)"/><circle cx="688" cy="417" r="7" fill="var(--paper)"/><circle cx="688" cy="460" r="7" fill="var(--paper)"/><circle cx="752" cy="374" r="7" fill="var(--paper)"/><circle cx="752" cy="417" r="7" fill="var(--paper)"/><circle cx="752" cy="460" r="7" fill="var(--paper)"/><circle cx="816" cy="374" r="7" fill="var(--paper)"/><circle cx="816" cy="417" r="7" fill="var(--paper)"/><circle cx="816" cy="460" r="7" fill="var(--paper)"/></g>
+            <text class="foundation-label" x="752" y="554">Foundation model</text>
+            <text class="foundation-small" x="752" y="590">Pretrained on large slide collections</text>
+            <text class="foundation-small" x="752" y="616">Virchow: 1.5 million slides</text>
+          </g>
+          <rect class="foundation-packet foundation-reveal foundation-ink" width="24" height="24" fill="var(--paper)"/>
+          <g class="foundation-embeddings foundation-reveal">
+            <path class="foundation-ink" d="M 879 420 L 982 420 M 974 414 L 982 420 L 974 426"/>
+            <text class="foundation-vector" data-vector="[ 0.12, −0.83, 0.46, … ]" x="1010" y="350"></text><text class="foundation-vector" data-vector="[ 0.71,  0.05, −0.29, … ]" x="1010" y="390"></text><text class="foundation-vector" data-vector="[−0.34,  0.62, 0.18, … ]" x="1010" y="430"></text><text class="foundation-vector" data-vector="[ 0.09, −0.41, 0.87, … ]" x="1010" y="470"></text><text class="foundation-vector" data-vector="[ 0.56,  0.23, −0.65, … ]" x="1010" y="510"></text>
+            <text class="foundation-label" x="1180" y="554">Embeddings</text>
+            <text class="foundation-small" x="1180" y="590">One numeric vector per tile</text>
+          </g>
+          <g class="foundation-tools foundation-reveal">
+            <text class="foundation-small" x="800" y="654">Embeddings + labelled examples → train and validate tools</text>
+            <g class="foundation-task foundation-reveal"><path class="foundation-ink" d="M 800 655 L 800 684 L 330 684 L 330 725 M 325 718 L 330 725 L 335 718"/><text class="foundation-label" x="330" y="764">Tumor detection</text></g><g class="foundation-task foundation-reveal"><path class="foundation-ink" d="M 800 655 L 800 684 L 650 684 L 650 725 M 645 718 L 650 725 L 655 718"/><text class="foundation-label" x="650" y="764">Tumor grading</text></g><g class="foundation-task foundation-reveal"><path class="foundation-ink" d="M 800 655 L 800 684 L 970 684 L 970 725 M 965 718 L 970 725 L 975 718"/><text class="foundation-label" x="970" y="764">Molecular prediction</text></g><g class="foundation-task foundation-reveal"><path class="foundation-ink" d="M 800 655 L 800 684 L 1290 684 L 1290 725 M 1285 718 L 1290 725 L 1295 718"/><text class="foundation-label" x="1290" y="764">Outcome prediction</text></g>
+          </g>
+        </g>
+      </svg>
+      <a class="foundation-source" href="https://www.nature.com/articles/s41591-024-03141-0" target="_blank" rel="noopener noreferrer">Virchow · Nature Medicine, 2024 · Diagram and numbers illustrative</a>
+    </section>
+
+    <!-- 11 · Lung case, first step (CP #54) -->
+    <section class="slide" id="lung-case" data-state="ready" data-build="3" data-lung-step="0" data-chapter="Foundation | the lung slide" data-heading="Read with context." data-notes="A real lung resection, already analysed. Start with context: one section, saved regions, a calibrated tissue map. Drag, zoom, explore.">
+      <p class="chapter">Foundation | the lung slide</p>
+      <h2 class="fork-heading" id="lung-case-heading">Read with context.</h2>
+      <p class="lung-subtitle">Astra preview concept <span>·</span> a pre-analyzed lung case</p>
+      <div class="lung-workspace">
+        <div class="lung-image-column">
+          <div class="lung-tools" role="group" aria-label="Lung case viewing tools">
+            <button type="button" data-lung-toggle="features" aria-pressed="true">Features</button>
+            <button type="button" data-lung-toggle="clusters" aria-pressed="false">Clusters</button>
+            <button type="button" data-lung-toggle="embeddings" aria-pressed="false">Embeddings</button>
+            <button type="button" class="lung-ruler" aria-pressed="false" disabled>Ruler</button>
+            <button type="button" class="lung-ruler-clear" disabled>Clear ruler</button>
+            <button type="button" class="lung-fit">Fit field</button>
+          </div>
+          <div class="lung-stage">
+            <div class="lung-viewer" role="region" aria-label="Lung slide. Drag to pan; scroll to zoom."></div>
+            <canvas class="lung-overlay" aria-hidden="true"></canvas>
+            <div class="lung-field-tag">Preparing saved case…</div>
+            <div class="lung-plot" hidden>
+              <div class="lung-plot-title">Embedding space <button type="button" class="lung-clear-cluster">Clear</button></div>
+              <canvas aria-label="Saved UMAP of 7,809 fused tile embeddings. Select a point to locate its tile." role="img"></canvas>
+              <div class="lung-cluster-keys" role="group" aria-label="Select an embedding cluster"></div>
+              <p class="lung-plot-caption">7,809 tiles · 12 clusters</p>
+            </div>
+            <div class="lung-loading" role="status">Opening saved case…</div>
+          </div>
+          <div class="lung-view-caption"><span class="lung-scale-note" role="status">Drag to pan · scroll to zoom</span><span class="lung-tile-note"></span></div>
+        </div>
+        <aside class="lung-trace" aria-label="Evidence and rationale" aria-live="polite">
+          <div class="lung-step-kicker">01 / 07 · PREPARE</div>
+          <h3 class="lung-step-heading">Read with context.</h3>
+          <div class="lung-evidence-block" data-beat="0"><h4>Observation</h4><p class="lung-observation"></p></div>
+          <div class="lung-evidence-block" data-beat="1"><h4>Mattipedia</h4><p class="lung-rule"></p><button type="button" class="lung-source-link">View reference</button></div>
+          <div class="lung-evidence-block" data-beat="2"><h4>Review decision</h4><p class="lung-decision"></p></div>
+          <div class="lung-summary" hidden></div>
+        </aside>
+      </div>
+      <nav class="lung-timeline" aria-label="Lung case walkthrough steps"></nav>
+      <div class="lung-playback"><button type="button" class="lung-play">Pause tour</button><button type="button" class="lung-replay">Replay</button><span class="lung-progress" role="status">Preparing</span></div>
+      <footer class="lung-provenance">Saved PPS analysis: Gemini 3.1 Pro · Astra interface concept, no live inference · pathologist review required <button type="button" class="lung-all-sources">Sources</button></footer>
+      <div class="lung-source-panel" role="dialog" aria-modal="true" aria-label="Case evidence and knowledge sources" hidden><button type="button" class="lung-close-sources">Close sources</button><div class="lung-source-content"></div></div>
+      <p class="draft-tag" hidden>DRAFT · pathologist review required</p>
+    </section>
+
+    <!-- 12 · Cluster embeddings (CP #24) -->
+    <section class="slide" id="cluster-embeddings" data-state="ready" data-revealed="false" data-build="4" data-notes="Same slide, 7,809 tiles, 12 clusters, no labels. The model organises the tissue by itself. Next press reveals the cancer clusters.">
+      <p class="chapter">Embeddings | UMAP</p>
+      <h2 class="fork-heading" id="cluster-heading">Let the model organise the slide</h2>
+      <p class="cluster-subtitle">7,809 tiles. 12 clusters.</p>
+      <div class="cluster-tissue cluster-interactive">
+        <div class="cluster-viewer" aria-label="Whole-slide viewer with embedding cluster overlays"></div><canvas class="cluster-overlay" aria-hidden="true"></canvas>
+        <div class="cluster-view-controls"><button type="button" data-cluster-view="in" aria-label="Zoom into clustered slide">+</button><button type="button" data-cluster-view="out" aria-label="Zoom out of clustered slide">−</button><button type="button" data-cluster-view="fit">Fit</button><button type="button" data-cluster-view="overlay" aria-pressed="true">Overlay</button></div>
+      </div>
+      <p class="cluster-loading">Loading slide…</p>
+      <div class="cluster-map cluster-interactive" role="img" aria-label="UMAP projection of 7,809 fused tile embeddings, grouped into 12 clusters">
+        <canvas></canvas>
+        <svg viewBox="0 0 600 500" aria-hidden="true"><ellipse class="cluster-cancer-ring" pathLength="1"/><g class="cluster-cancer-label"><path class="cluster-cancer-leader" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="25" y="42">Cancer</text><text x="25" y="67" font-size="17">0 · 8 · 1 · 3 · 5</text></g></svg>
+      </div>
+      <div class="cluster-legend cluster-interactive" aria-label="Select a cluster"></div>
+      <button class="cluster-reveal-button" type="button">Reveal</button>
+      <p class="sr-only cluster-annotation" aria-live="polite"></p>
+      <a class="foundation-source" href="https://cap-26.vercel.app/#cluster-embeddings" target="_blank" rel="noopener noreferrer">Fused embeddings · UMAP · CAP26</a>
+    </section>
+
+    <!-- 13 · FROST (biomarker deck #75) -->
+    <section class="slide" id="frost" data-build="5" data-notes="Triage. FROST screens each frozen section as it comes off the scanner. 100 percent sensitivity, batch time down 44 percent.">
+      <p class="chapter">Triage | FROST</p>
+      <h2 class="fork-heading">In-line AI screening on the scanner</h2>
+      <div class="frost-grid">
+        <video class="frost-video" src="assets/video/frost-inline.mp4" muted loop playsinline preload="metadata" data-autoplay aria-label="FROST in-line screening running on the scanner"></video>
+        <div class="frost-stats">
+          <div class="stat"><b>100%</b><span>sensitivity</span></div>
+          <div class="stat"><b>0.978</b><span>AUC</span></div>
+          <div class="stat"><b>86.3%</b><span>specificity</span></div>
+          <div class="stat good"><b>−44%</b><span>batch time (53 vs 94 min)</span></div>
+        </div>
+      </div>
+      <p class="foundation-source">FROST · frozen-section screening · 97 cases · 331 slides · Josh Del Papa</p>
+    </section>
+
+    <!-- 14 · Triage + biomarker ordering (biomarker deck #77) -->
+    <section class="slide" id="build-on" data-build="5" data-notes="Same idea for biopsies. The scanned slide goes through a foundation model and a small classifier; a cancer is triaged and its biomarkers ordered before anyone opens the case. Lung: PD-L1, ALK, NGS.">
+      <p class="chapter">Triage | biomarkers</p>
+      <h2 class="fork-heading">AI triage with pre-emptive biomarker ordering</h2>
+      <div class="exits">
+        <div class="ex-src"><b>Scanned slide</b><span>Foundation model + small classifier</span></div>
+        <div class="ex-lines">
+          <div class="ex" style="--k:0"><b>Breast cancer</b><span>ER · PR · HER2</span></div>
+          <div class="ex" style="--k:1"><b>Colorectal cancer</b><span>MMR · NGS</span></div>
+          <div class="ex" style="--k:2"><b>Gastric / oesophageal</b><span>PD-L1 · MMR · CLDN18.2 · HER2</span></div>
+          <div class="ex is-lung" style="--k:3"><b>Lung cancer</b><span>PD-L1 · ALK · NGS</span></div>
+        </div>
+      </div>
+      <p class="foundation-source">Each exit is a lab-developed test, validated locally, with a pathologist confirming the diagnosis.</p>
+    </section>
+
+    <!-- 15 · Jev (CP #38) -->
+    <section class="slide" id="jev" data-stage="2" data-build="6" data-notes="A new class of model: fast, typed decisions instead of free text. Vendor-reported 70 to 500 milliseconds, against 3 to 329 seconds for frontier models.">
+      <p class="chapter">Jev | System One</p>
+      <h2 class="fork-heading" id="jev-heading">System One models: Jev</h2>
+      <div class="jev-figs">
+        <p class="jev-fig fast"><b>70–500 ms</b><span>Jev · per decision</span></p>
+        <p class="jev-fig"><b>3–329 s</b><span>frontier models</span></p>
+        <p class="jev-vendor">vendor-reported</p>
+      </div>
+      <div class="jev-race" data-from="2" aria-hidden="true">
+        <p class="jev-prompt">Chronic active gastritis on H&amp;E. Order a Warthin-Starry?</p>
+        <div class="jev-lane jev-llm">
+          <header><div>Frontier LLM <span>token by token</span></div><div class="jev-clock" data-clock="llm">0.0 s</div></header>
+          <p class="jev-out" data-out="llm"></p>
+        </div>
+        <div class="jev-lane jev-fast">
+          <header><div>Jev <span>one parallel query</span></div><div class="jev-clock" data-clock="jev">0.0 s</div></header>
+          <p class="jev-out" data-out="jev"></p>
+        </div>
+        <button type="button" class="jev-replay">Replay</button>
+      </div>
+      <p class="foundation-source">TypeSafe AI. Introducing System One models and Jev. Sep 26, 2026 · Vendor-reported figures · Race timing illustrative</p>
+    </section>
+
+    <!-- 16 · Jev cell finder (CP #39) -->
+    <section class="slide" id="cell-finder" data-build="6" data-notes="Live. Describe a cell and Jev scores every cell type in one call. Try 'ciliated'. Escape gives the arrow keys back.">
+      <p class="chapter">Jev | live</p>
+      <h2 class="fork-heading" id="cell-finder-heading">Jev, live: describe a cell</h2>
+      <div class="cf-search">
+        <input class="cf-input" type="text" placeholder="Describe a cell…" aria-label="Describe a cell" autocomplete="off" spellcheck="false">
+        <p class="cf-status" aria-live="polite"></p>
+      </div>
+      <div class="cf-examples" aria-label="Example descriptions"></div>
+      <div class="cf-result" aria-live="polite"></div>
+      <div class="cf-shelf" aria-hidden="true"></div>
+      <p class="foundation-source">typesafe-ai/jev via Vercel AI Gateway · one choice question over 52 cell types plus tissue family · Esc returns the arrow keys to the deck</p>
+      <a class="live-link" href="https://camp-pods.vercel.app" target="_blank" rel="noopener noreferrer">open live demo ↗</a>
+    </section>
+
+    <!-- 17 · Jev scan (CP #40) -->
+    <section class="slide" id="jev-scan" data-pace="survey" data-build="6" data-notes="Jev drives the slide: a sentinel node at 10x, rim first, then the interior. It only sees optical density, never pixels. S stops, T marks tumour.">
+      <p class="chapter">Jev | navigation</p>
+      <h2 class="fork-heading" id="jev-scan-heading">Jev drives the slide</h2>
+      <p class="js-sub">Sentinel lymph node at 10× · rim first, then interior · Jev sees optical density only, never pixels</p>
+      <div class="js-stage">
+        <div class="js-viewer" aria-label="Whole-slide image of a sentinel lymph node, navigated by Jev"></div>
+        <div class="js-reticle" aria-hidden="true"></div>
+        <div class="js-hud"><span class="js-hud-mag">—</span><span class="js-hud-field"></span><span class="js-pace" data-pace="survey">survey</span></div>
+        <div class="js-pad" aria-label="Pan the slide"><button type="button" data-dir="up" aria-label="Pan up">▲</button><button type="button" data-dir="left" aria-label="Pan left">◀</button><button type="button" data-dir="right" aria-label="Pan right">▶</button><button type="button" data-dir="down" aria-label="Pan down">▼</button><span>arrow keys pan</span></div>
+        <div class="js-controls"><button type="button" class="js-stop">Stop<kbd>S</kbd></button><button type="button" class="js-tumor">Tumor<kbd>T</kbd></button></div>
+      </div>
+      <aside class="js-panel" aria-label="Jev decisions">
+        <div class="js-stats"><div class="hot"><strong data-stat="calls">0</strong><span>Jev calls</span></div><div class=""><strong data-stat="decisions">0</strong><span>decisions</span></div><div class=""><strong data-stat="rate">0</strong><span>calls / s</span></div><div class=""><strong data-stat="median">0</strong><span>median ms</span></div><div class=""><strong data-stat="fields">0</strong><span>fields screened</span></div><div class=""><strong data-stat="coverage">0%</strong><span>node covered</span></div><div class=""><strong data-stat="warmed">0</strong><span>tiles pre-warmed</span></div><div class=""><strong data-stat="cost">0</strong><span>total cost</span></div></div>
+        <div class="js-maps">
+          <figure><canvas data-map="H" aria-label="Hematoxylin optical density map"></canvas><figcaption>Hematoxylin OD</figcaption></figure>
+          <figure><canvas data-map="E" aria-label="Eosin optical density map"></canvas><figcaption>Eosin OD</figcaption></figure>
+          <figure><canvas data-map="D" aria-label="Density class map"></canvas><figcaption>Density class</figcaption></figure>
+        </div>
+        <p class="js-legend"><span><i style="background:rgb(232,223,200)"></i>adipose</span><span><i style="background:rgb(201,143,146)"></i>tumor or sinus</span><span><i style="background:rgb(76,68,88)"></i>lymph node</span><span><i style="background:#617f75;border-radius:50%"></i>look-ahead flag</span><span><i style="border:2px solid #a54a46"></i>tumor annotation</span></p>
+        <div class="js-sensor"><p class="js-sensor-title">What Jev sees</p></div>
+        <ol class="js-log" aria-live="off"></ol>
+      </aside>
+      <button type="button" class="js-restart">Restart</button>
+      <p class="foundation-source">CAMELYON16 tumor_091 · H&amp;E OD sensor, 128 × 112 cells of 109 µm · typesafe-ai/jev via AI Gateway · research demo, not a diagnosis</p>
+      <a class="live-link" href="https://camp-pods.vercel.app" target="_blank" rel="noopener noreferrer">open live demo ↗</a>
+    </section>
+
+    <!-- 18 · Lung case, final step (CP #54, same lung-case instance) -->
+    <section class="slide" id="lung-final" data-alias="lung-case" data-lung-step="6" data-build="7" data-chapter="Report | lung case" data-heading="Every finding has a place." data-notes="Back to the lung. Every finding has a place: tumour 8.2 mm, STAS present, pleura unresolved, an LVI focus. Click any one to return to its evidence. A draft, for pathologist review."></section>
+
+    <!-- 19 · Close -->
+    <section class="slide dark" id="closing" data-build="7" data-notes="Thank you. Happy to take questions.">
+      <div class="closing-site" data-motif="full" aria-hidden="true"></div>
+      <div class="closing-copy">
+        <h2>Thank you</h2>
+        <p class="closing-q">Questions</p>
+        <p class="closing-name">Matt Cecchini, MD</p>
+      </div>
+    </section>
+
+    <div class="sweep" aria-hidden="true"></div>
+    <div class="motif" data-motif="corner" aria-hidden="true"></div>
+    <div class="progress" aria-hidden="true"><i></i></div>
+    <p class="counter" aria-live="polite"></p>
+    <aside class="notes-panel" hidden><p class="notes-text"></p></aside>
+  </main>
+
+  <script src="assets/deck.js"></script>
+  <script src="assets/vendor/openseadragon.min.js"></script>
+  <script type="module" src="assets/cluster-embeddings.js"></script>
+  <script type="module" src="assets/inputs.js"></script>
+  <script type="module" src="assets/lung-case.js"></script>
+  <script type="module" src="assets/jev-cells/cell-finder.js"></script>
+  <script type="module" src="assets/jev-scan/jev-scan.js"></script>
+</body>
+</html>

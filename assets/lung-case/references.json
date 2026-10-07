@@ -1,0 +1,41 @@
+{
+  "articles": [
+    {
+      "id": "lung_adenocarcinoma",
+      "title": "Lung Adenocarcinoma",
+      "section": "Classification Principle",
+      "summary": "Classify adenocarcinoma by its predominant architectural pattern, with comprehensive histological subtyping.",
+      "retrieved": "2026-09-12",
+      "sha256": "d80e99f8f100de6dbebec8c131add4680f1a2805cb01299b4a6014c1d8af7894"
+    },
+    {
+      "id": "lung_resection_specimen_grossing",
+      "title": "Lung Resection Specimen Grossing",
+      "section": "Tumor Size Measurement; Measuring Invasive Size; Visceral Pleural Invasion",
+      "summary": "Correlate the section with gross and imaging measurements. In non-mucinous adenocarcinoma, distinguish the invasive component from lepidic growth. Resolve uncertain pleural invasion with an elastic stain.",
+      "retrieved": "2026-09-12",
+      "sha256": "e5c2b0096ea021d1c9fc8cc4fe4bbf46b4d27cd779199deb367d8a8df3bebc1c"
+    },
+    {
+      "id": "stas_assessment",
+      "title": "STAS: Spread Through Air Spaces",
+      "section": "Definition; Morphologic Criteria; Pitfalls",
+      "summary": "Look for detached tumor clusters in alveolar spaces beyond the main tumor edge. Check the distribution and exclude displaced cells or knife artifact.",
+      "retrieved": "2026-09-12",
+      "sha256": "c63fdd8497d314b853b06125cddbfa572c001dd856f061a5e2bc451832a1d632"
+    },
+    {
+      "id": "pleural_pathology",
+      "title": "Pleural Pathology",
+      "section": "Practical Pearls",
+      "summary": "Use VVG or Movat to identify the elastic layers when their relationship to tumor is unclear on H&E.",
+      "retrieved": "2026-09-12",
+      "sha256": "5855d3a4883703145fcaf37d68695cf24fa642c86f11158ebe973ad87da4106f"
+    }
+  ],
+  "clinicalReference": {
+    "title": "CAP Lung Resection v5.1.0.0, notes B, C and E",
+    "url": "https://www.cap.org/wp-content/uploads/protocols/Lung_5.1.0.0.REL_CAPCP.pdf?download=true",
+    "summary": "Exclude STAS from tumor size. Pleural invasion depends on the external elastic-layer relationship, not proximity alone."
+  }
+}

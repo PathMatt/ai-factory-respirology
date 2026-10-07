@@ -1,0 +1,259 @@
+{
+  "provenance": {
+    "source": "https://pps-slide-deck.vercel.app/viewer/agentic-review",
+    "savedModel": "google/gemini-3.1-pro-preview",
+    "mode": "Astra preview concept; replay of saved PPS findings, no live inference",
+    "prepared": "2026-09-12"
+  },
+  "slide": {
+    "width": 39688,
+    "height": 68297,
+    "mpp_x": 0.26348,
+    "thumb_w": 813,
+    "thumb_h": 1400
+  },
+  "annotations": [
+    {
+      "type": "tumor",
+      "label": "Invasive tumour \u2014 8 mm",
+      "bbox": [
+        13175,
+        11475,
+        19975,
+        27200
+      ],
+      "hull": [
+        [
+          13387,
+          13812
+        ],
+        [
+          13812,
+          12962
+        ],
+        [
+          24862,
+          11687
+        ],
+        [
+          29537,
+          14662
+        ],
+        [
+          31662,
+          18487
+        ],
+        [
+          32937,
+          34212
+        ],
+        [
+          32937,
+          36762
+        ],
+        [
+          32087,
+          38037
+        ],
+        [
+          31662,
+          38462
+        ],
+        [
+          15087,
+          38462
+        ],
+        [
+          14662,
+          38037
+        ],
+        [
+          13812,
+          36762
+        ],
+        [
+          13387,
+          35487
+        ]
+      ],
+      "color": "#d6336c",
+      "image": "r_3.jpg"
+    },
+    {
+      "type": "stas",
+      "label": "STAS (bottom) \u2014 detached tumour in air spaces",
+      "bbox": [
+        22295,
+        40709,
+        2600,
+        2600
+      ],
+      "color": "#f59f00",
+      "image": "r_4.jpg"
+    },
+    {
+      "type": "pattern",
+      "pattern": "papillary",
+      "label": "Papillary pattern",
+      "bbox": [
+        15062,
+        25687,
+        2600,
+        2600
+      ],
+      "color": "#b197fc",
+      "image": "r_5.jpg"
+    },
+    {
+      "type": "pattern",
+      "pattern": "acinar",
+      "label": "Acinar pattern",
+      "bbox": [
+        18887,
+        14637,
+        2600,
+        2600
+      ],
+      "color": "#4dabf7",
+      "image": "r_6.jpg"
+    },
+    {
+      "type": "pattern",
+      "pattern": "acinar",
+      "label": "Acinar pattern",
+      "bbox": [
+        27812,
+        21862,
+        2600,
+        2600
+      ],
+      "color": "#4dabf7",
+      "image": "r_7.jpg"
+    },
+    {
+      "type": "pattern",
+      "pattern": "acinar",
+      "label": "Acinar pattern",
+      "bbox": [
+        25262,
+        27812,
+        2600,
+        2600
+      ],
+      "color": "#4dabf7",
+      "image": "r_8.jpg"
+    },
+    {
+      "type": "pattern",
+      "pattern": "acinar",
+      "label": "Acinar pattern",
+      "bbox": [
+        19312,
+        35462,
+        2600,
+        2600
+      ],
+      "color": "#4dabf7",
+      "image": "r_9.jpg"
+    },
+    {
+      "type": "pleura",
+      "label": "Visceral pleura (along the top) \u2014 tumour approaches 0.7 mm",
+      "bbox": [
+        26962,
+        10387,
+        2600,
+        2600
+      ],
+      "point": [
+        28262,
+        11687
+      ],
+      "color": "#15aabf",
+      "image": "r_15.jpg"
+    },
+    {
+      "type": "stas",
+      "status": "present",
+      "label": "STAS \u2014 tumour cells in air spaces",
+      "bbox": [
+        22295,
+        40709,
+        2600,
+        2600
+      ],
+      "color": "#f59f00",
+      "image": "r_23.jpg"
+    },
+    {
+      "type": "lvi",
+      "status": "present",
+      "label": "LVI \u2014 tumour in a lymphovascular space",
+      "bbox": [
+        27785,
+        13077,
+        2600,
+        2600
+      ],
+      "color": "#7048e8",
+      "image": "r_44.jpg"
+    }
+  ],
+  "measurement": {
+    "endpoints": [
+      [
+        31662,
+        38462
+      ],
+      [
+        13812,
+        12962
+      ]
+    ],
+    "micronsPerPixel": 0.26348,
+    "millimetres": 8.201267347765466,
+    "initialRecordedMm": 11.9
+  },
+  "fields": [
+    {
+      "key": "size",
+      "region": [
+        13175,
+        11475,
+        19975,
+        27200
+      ],
+      "image": "r_45.jpg"
+    },
+    {
+      "key": "pleura",
+      "region": [
+        26962,
+        10387,
+        2600,
+        2600
+      ],
+      "image": "r_47.jpg"
+    },
+    {
+      "key": "stas",
+      "region": [
+        22295,
+        40709,
+        2600,
+        2600
+      ],
+      "image": "r_48.jpg"
+    },
+    {
+      "key": "lymphatic",
+      "region": [
+        27785,
+        13077,
+        2600,
+        2600
+      ],
+      "image": "r_49.jpg"
+    }
+  ]
+}
