@@ -65,8 +65,9 @@ body { background: #030c16; font-family: var(--sans); -webkit-font-smoothing: an
 #title.is-settled .title-site .slot, #title.is-settled .title-site .stack { stroke-dasharray: none; transition: none; }
 #title .stack-mouth { fill: none; stroke: none; }
 #title .dust { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+#title .dust .plume { position: absolute; left: 0; top: 0; pointer-events: none; }
 #title .dust span { position: absolute; left: 0; top: 0; white-space: nowrap; will-change: transform, opacity; opacity: 0;
-  font: 400 1.05cqw/1 var(--mono); color: #d9cdb2; letter-spacing: .02em; }
+  font: 500 1.05cqw/1 var(--mono); color: #fbf6ea; letter-spacing: .02em; text-shadow: 0 0 .5cqw rgba(6, 24, 42, .55); }
 #title .title-copy { position: absolute; left: 0; right: 0; top: 17%; text-align: center; z-index: 2; }
 #title h1 { margin: 0; font: 600 4.8cqw/1.05 var(--sans); letter-spacing: -.045em; color: #f4efe2; text-shadow: 0 0 2.4cqw var(--navy), 0 0 1.2cqw var(--navy); }
 #title .title-copy p { margin: 1.8cqw 0 0; font: 500 1.25cqw/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--brass-2); }
