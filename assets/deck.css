@@ -64,6 +64,19 @@ body { background: #030c16; font-family: var(--sans); -webkit-font-smoothing: an
 #title.is-drawn .title-site .slot, #title.is-drawn .title-site .stack { transition: stroke-dashoffset 1.8s ease-out calc(var(--i, 3) * 110ms + 300ms); stroke-dashoffset: 0; }
 #title.is-settled .title-site .slot, #title.is-settled .title-site .stack { stroke-dasharray: none; transition: none; }
 #title .stack-mouth { fill: none; stroke: none; }
+#title .factory-art .slot { stroke-width: .75; stroke-dasharray: 1200; stroke-dashoffset: 1200; }
+#title .factory-art .ground { stroke-width: .8; }
+#title .factory-art .det { fill: none; stroke: var(--m-line); stroke-width: .4; stroke-linecap: round; opacity: 0; }
+#title.is-drawn .factory-art .det { transition: opacity 1.2s ease 1.4s; opacity: .7; }
+#title .factory-art .glow { fill: #ffcf7a; stroke: none; opacity: 0; filter: drop-shadow(0 0 1.6px rgba(255, 196, 110, .9)); }
+#title.is-drawn .factory-art .glow { transition: opacity 1s ease 1.8s; opacity: .55; }
+#title.is-settled .factory-art .glow.f1 { animation: winFlicker 5.3s steps(1) infinite; }
+#title.is-settled .factory-art .glow.f2 { animation: winFlicker 7.1s steps(1) 1.3s infinite; }
+#title.is-settled .factory-art .glow.f3 { animation: winFlicker 9.4s steps(1) 2.7s infinite; }
+@keyframes winFlicker { 0%, 100% { opacity: .55; } 46% { opacity: .38; } 48% { opacity: .6; } 50% { opacity: .3; } 53% { opacity: .55; } 80% { opacity: .48; } }
+#title .factory-art .gear { transform-box: fill-box; transform-origin: center; }
+#title.is-settled .factory-art .gear { animation: gearSpin 14s linear infinite; }
+@keyframes gearSpin { to { transform: rotate(360deg); } }
 #title .dust { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
 #title .dust .plume { position: absolute; left: 0; top: 0; pointer-events: none; }
 #title .dust span { position: absolute; left: 0; top: 0; white-space: nowrap; will-change: transform, opacity; opacity: 0;
@@ -188,6 +201,9 @@ body { background: #030c16; font-family: var(--sans); -webkit-font-smoothing: an
   .factory .blk, .progress i { transition: none; }
   .sweep.run { animation: none; }
   #title .title-site .slot, #title .title-site .stack, #title .title-site .ground { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; transition: none !important; }
+  #title .factory-art .det { opacity: .7 !important; transition: none !important; }
+  #title .factory-art .glow { opacity: .55 !important; transition: none !important; animation: none !important; }
+  #title .factory-art .gear { animation: none !important; }
   #build-on .ex { opacity: 1; transform: none; animation: none !important; }
   #closing.is-active .factory .smoke { animation: none; }
   #closing.is-active .factory .lamp { animation: none; opacity: 1; }

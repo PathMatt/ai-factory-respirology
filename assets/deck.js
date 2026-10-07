@@ -45,7 +45,83 @@
     return `<svg class="factory" viewBox="0 0 140 60" preserveAspectRatio="xMidYMax meet">
       <path class="ground" d="M0 ${G}H140"/>${slots.join('')}${kind === 'art' ? '' : blocks.join('')}</svg>`;
   }
-  deck.querySelectorAll('[data-motif]').forEach(el => { el.innerHTML = factorySvg(el.dataset.motif); });
+  // ---------- Title-only detailed factory (line art). Corner/closing motif above is untouched. ----------
+  function titleFactorySvg() {
+    const GY = 112, out = [], det = [], glow = [];
+    let n = 0;
+    const L = d => out.push(`<path class="slot" style="--i:${n++ % 7}" d="${d}"/>`);   // main outlines (draw-in)
+    const D = d => det.push(`<path d="${d}"/>`);                                        // fine detail (fades in)
+    const win = (x, y, w, h, lit, k) => {
+      det.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}"/>`);
+      if (lit) glow.push(`<rect class="glow${k ? ' f' + k : ''}" x="${x + .35}" y="${y + .35}" width="${w - .7}" height="${h - .7}"/>`);
+    };
+    // Chimney: tapered, banded, capped, with a ladder; mouth marks where the plume starts.
+    const mouths = [];
+    const chimney = (cx, base, top, wb, wt, ladderSide) => {
+      const xl0 = cx - wb / 2, xr0 = cx + wb / 2, xl1 = cx - wt / 2, xr1 = cx + wt / 2;
+      L(`M${xl0} ${base}L${xl1} ${top + 3}M${xr0} ${base}L${xr1} ${top + 3}`);
+      L(`M${xl1 - 1.2} ${top + 3}H${xr1 + 1.2}V${top}H${xl1 - 1.2}Z`);                // cap
+      const bands = [.18, .45, .72];
+      bands.forEach(f => { const y = top + 3 + (base - top - 3) * f, hw = (wt + (wb - wt) * f) / 2; D(`M${cx - hw} ${y}H${cx + hw}M${cx - hw} ${y + 1.2}H${cx + hw}`); });
+      const lx = ladderSide > 0 ? xr0 + .6 : xl0 - 2.4, lx1 = ladderSide > 0 ? xr1 + .6 : xl1 - 2.4;
+      D(`M${lx} ${base}L${lx1} ${top + 4}M${lx + 1.8} ${base}L${lx1 + 1.8} ${top + 4}`);
+      for (let y = base - 2; y > top + 5; y -= 2.6) { const f = (base - y) / (base - top - 4), x = lx + (lx1 - lx) * f; D(`M${x} ${y}H${x + 1.8}`); }
+      mouths.push(`<circle class="stack-mouth" cx="${cx}" cy="${top - .8}" r=".1"/>`);
+    };
+
+    // Water tower
+    L(`M12 ${GY}L15 66M30 ${GY}L27 66M21 ${GY}V66`);
+    D(`M13.2 98L28.8 84M13.2 84L28.8 98M14.4 80L27.6 70M14.4 70L27.6 80`);
+    L(`M11 66H31V50H11ZM11 50Q21 41 31 50`);
+    D(`M11 55H31M11 61H31M21 41V38`);
+
+    // A: pitched-roof warehouse with loading bays and a brick hint
+    L(`M36 ${GY}V78L58 64L80 78V${GY}M34 79L58 63L82 79`);
+    for (const x of [40, 60]) { L(`M${x} ${GY}V96H${x + 14}V${GY}`); for (let y = 99; y < GY; y += 3) D(`M${x + 1} ${y}H${x + 13}`); }
+    win(54, 70, 8, 5, true, 1); D(`M58 70V75`);
+    D(`M37 84H40M38.5 87H41.5M37 90H40M76 86H79M77.5 89H80.5`);
+
+    // B: main hall with a sawtooth roof, two rows of windows, central door
+    const bx0 = 86, bx1 = 170, bTop = 72, tooth = 21;
+    let roof = `M${bx0} ${GY}V${bTop}`;
+    for (let x = bx0; x < bx1; x += tooth) roof += `L${x} ${bTop - 11}L${x + tooth} ${bTop}`;
+    L(roof + `V${GY}`);
+    for (let x = bx0; x < bx1; x += tooth) { D(`M${x + 1} ${bTop - 9.5}L${x + 1} ${bTop - 2}`); D(`M${x + 2.5} ${bTop - 8}L${x + 2.5} ${bTop - 1}`); }   // north-light glazing
+    const litB = new Set([2, 5, 6, 9, 13, 16, 19]);
+    let wi = 0;
+    for (const y of [78, 89]) for (let x = bx0 + 4; x < bx1 - 6; x += 6.6) { const k = wi++; if (y === 89 && x > 120 && x < 136) continue; win(x, y, 3.6, 5.2, litB.has(k), k % 3 === 0 ? 2 : (k % 5 === 0 ? 3 : 0)); }
+    L(`M122 ${GY}V99H134V${GY}`); D(`M128 99V${GY}`);
+    D(`M${bx0} 97H${bx1}`);                                                            // plinth line
+    chimney(114, bTop - 11, 12, 9, 6.2, 1);
+
+    // Pipe rack: A → B (low) and B → C (high, on supports)
+    L(`M80 86H86M80 90H86`); D(`M82.5 85V91`);
+    L(`M170 66H182M170 69H182`); D(`M174 66V69M178 66V69M176 69V${GY}`);
+
+    // C: boiler house, panelled, with two chimneys
+    L(`M182 ${GY}V70H224V${GY}`); D(`M180.5 70H225.5`);
+    for (let x = 188; x < 224; x += 6) D(`M${x} 74V${GY - 2}`);                       // panel seams
+    win(186, 76, 5, 4, true, 3); win(204, 76, 5, 4, false); win(214, 76, 5, 4, true, 0);
+    L(`M195 ${GY}V100H205V${GY}`);
+    chimney(193, 70, 24, 7.5, 5.4, -1);
+    chimney(213, 70, 32, 7, 5, 1);
+
+    // Conveyor: D → C, rising on a truss with rollers
+    L(`M226 92L246 78M226 95L246 81`);
+    for (let i = 0; i <= 4; i++) { const x = 228 + i * 4.4, y = 93.1 - i * 3.08; D(`M${x} ${y + 1.6}V${GY}`); }
+    for (let i = 0; i < 5; i++) det.push(`<circle cx="${229 + i * 4}" cy="${91.6 - i * 2.8}" r=".6"/>`);
+
+    // D: small pitched shed with a gear on the gable
+    L(`M246 ${GY}V80L258 72L270 80V${GY}M244.5 81L258 71L271.5 81`);
+    L(`M252 ${GY}V102H262V${GY}`); for (let y = 104.5; y < GY; y += 2.5) D(`M253 ${y}H261`);
+    const gx = 258, gy = 88, teeth = [];
+    for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; teeth.push(`M${(gx + Math.cos(a) * 4.2).toFixed(2)} ${(gy + Math.sin(a) * 4.2).toFixed(2)}L${(gx + Math.cos(a) * 5.6).toFixed(2)} ${(gy + Math.sin(a) * 5.6).toFixed(2)}`); }
+    det.push(`<g class="gear"><circle cx="${gx}" cy="${gy}" r="4.2"/><circle cx="${gx}" cy="${gy}" r="1.4"/><path d="${teeth.join('')}"/></g>`);
+
+    return `<svg class="factory factory-art" viewBox="0 0 280 120" preserveAspectRatio="xMidYMax meet">
+      <path class="ground" d="M0 ${GY}H280"/><g class="glows">${glow.join('')}</g>${out.join('')}<g class="det">${det.join('')}</g>${mouths.join('')}</svg>`;
+  }
+  deck.querySelectorAll('[data-motif]').forEach(el => { el.innerHTML = el.dataset.motif === 'art' ? titleFactorySvg() : factorySvg(el.dataset.motif); });
   const corner = deck.querySelector('.motif');
   const setBuild = (root, n) => root.querySelectorAll('.blk').forEach(b => b.classList.toggle('on', Number(b.dataset.b) <= n));
 
