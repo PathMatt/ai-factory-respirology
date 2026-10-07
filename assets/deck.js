@@ -126,134 +126,141 @@
   const setBuild = (root, n) => root.querySelectorAll('.blk').forEach(b => b.classList.toggle('on', Number(b.dataset.b) <= n));
 
   // ---------- Title: dust plumes billow from the stacks; words ride inside them ----------
+  // Reusable plume scene (title + closing bookend): one instance per slide, runs only while active.
+  function plumeScene(titleSlide, ceil0) {
+    const dust = titleSlide.querySelector('.dust');
+    const WORDS = ['eye tracking', 'mitotic figures', 'foundation models', 'embeddings', 'triage', 'reporting', 'Jev', 'reasoning', 'vision', 'agents', 'math', 'gaze', 'UMAP', 'dictation'];
+    const MAX_WORDS = 16;
+    const plume = document.createElement('canvas');
+    plume.className = 'plume';
+    const pctx = plume.getContext('2d');
+    // Pre-rendered soft puff sprites (no CSS blur filters → cheap at 60fps).
+    const sprite = rgb => {
+      const c = document.createElement('canvas'); c.width = c.height = 128;
+      const g = c.getContext('2d'), gr = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+      gr.addColorStop(0, `rgba(${rgb},1)`); gr.addColorStop(.45, `rgba(${rgb},.55)`); gr.addColorStop(1, `rgba(${rgb},0)`);
+      g.fillStyle = gr; g.fillRect(0, 0, 128, 128); return c;
+    };
+    const SPRITES = [sprite('214,196,158'), sprite('190,178,156'), sprite('201,168,106')];
+    let dustRaf = 0, dustLast = 0, wordSpawn = 0, words = [], puffs = [], stackTimers = [], cw = 0, ch = 0, dpr = 1;
+    // Stack mouths in the slide's own (unscaled) layout units. Measured relative to the
+    // factory drawing, then mapped onto its layout box, so entrance transforms or stage
+    // scaling at the moment of measurement can't misplace the plumes.
+    const site = titleSlide.querySelector('.title-site');
+    const mouths = () => {
+      const tr = site.getBoundingClientRect();
+      if (!tr.width) return [];
+      const W = site.offsetWidth, H = site.offsetHeight, left = site.offsetLeft - W / 2, top = site.offsetTop;
+      return [...titleSlide.querySelectorAll('.stack-mouth')].map(m => {
+        const r = m.getBoundingClientRect();
+        return [left + ((r.left + r.width / 2 - tr.left) / tr.width) * W, top + ((r.top + r.height / 2 - tr.top) / tr.height) * H];
+      });
+    };
+    function sizeCanvas() {
+      const W = titleSlide.clientWidth, H = titleSlide.clientHeight, r = titleSlide.getBoundingClientRect();
+      dpr = .5 * (W ? r.width / W : 1);   // soft puffs need no resolution: half-res canvas keeps fill cost low
+      if (W !== cw || H !== ch) {
+        cw = W; ch = H;
+        plume.width = Math.round(cw * dpr); plume.height = Math.round(ch * dpr); plume.style.width = cw + 'px'; plume.style.height = ch + 'px';
+      }
+    }
+    // Fade everything out before it reaches the title block (top ~35% of the slide).
+    const ceiling = y => Math.max(0, Math.min(1, (y - ch * ceil0) / (ch * .14)));
+    function spawnPuff(si, w) {
+      puffs.push({ si, x: (Math.random() - .5) * w * .006, y: w * .003, age: 0,
+        life: 4.2 + Math.random() * 1.8, vy: w * (.03 + Math.random() * .014), vx: w * (.006 + Math.random() * .01) + (Math.random() - .5) * w * .012,
+        wind: w * (.012 + Math.random() * .01), r0: w * (.012 + Math.random() * .006), r1: w * (.07 + Math.random() * .05),
+        peak: .1 + Math.random() * .1, spr: SPRITES[Math.random() < .55 ? 0 : (Math.random() < .65 ? 1 : 2)], wob: Math.random() * 6.28 });
+    }
+    function spawnWord(si, w) {
+      const el = document.createElement('span');
+      el.textContent = WORDS[Math.floor(Math.random() * WORDS.length)];
+      dust.append(el);
+      words.push({ el, si, x: (Math.random() - .5) * w * .01, y: -w * .02, age: 0,
+        life: 4 + Math.random() * 1.5, vy: w * (.028 + Math.random() * .01), vx: w * (.008 + Math.random() * .008),
+        wind: w * (.012 + Math.random() * .008), phase: Math.random() * 6.28, amp: w * (.003 + Math.random() * .004),
+        s0: .8 + Math.random() * .3, peak: .6 + Math.random() * .35 });
+    }
+    function step(dt, w, src) {
+      src.forEach((m, i) => {
+        stackTimers[i] = (stackTimers[i] ?? Math.random() * .05) - dt;
+        while (stackTimers[i] <= 0) { spawnPuff(i, w); stackTimers[i] += .07 + Math.random() * .04; }
+      });
+      puffs = puffs.filter(p => {
+        p.age += dt; const k = p.age / p.life; if (k >= 1) return false;
+        p.y -= p.vy * dt * (1 - k * .55);
+        p.x += (p.vx + p.wind * k + Math.sin(p.age * 1.3 + p.wob) * w * .003) * dt;
+        return true;
+      });
+      wordSpawn -= dt;
+      if (wordSpawn <= 0 && words.length < MAX_WORDS && src.length) { spawnWord(Math.floor(Math.random() * src.length), w); wordSpawn = .42 + Math.random() * .25; }
+      words = words.filter(p => {
+        p.age += dt; const k = p.age / p.life;
+        if (k >= 1) { p.el.remove(); return false; }
+        p.y -= p.vy * dt * (1 - k * .55);
+        p.x += (p.vx + p.wind * k + Math.cos(p.age * 1.1 + p.phase) * p.amp) * dt;
+        return true;
+      });
+    }
+    function draw(w, src = mouths()) {
+      if (!src.length) return;
+      pctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      pctx.clearRect(0, 0, cw, ch);
+      for (const p of puffs) {
+        const k = p.age / p.life, r = p.r0 + (p.r1 - p.r0) * Math.sqrt(k);
+        const m = src[p.si] || src[0], X = m[0] + p.x, Y = m[1] + p.y;
+        const a = p.peak * Math.min(1, k / .06) * (1 - k) * ceiling(Y);
+        if (a < .004) continue;
+        pctx.globalAlpha = a;
+        pctx.drawImage(p.spr, X - r, Y - r, r * 2, r * 2);
+      }
+      pctx.globalAlpha = 1;
+      for (const p of words) {
+        const k = p.age / p.life;
+        const m = src[p.si] || src[0], X = m[0] + p.x, Y = m[1] + p.y;
+        const fade = Math.min(1, k / .15) * (1 - Math.max(0, (k - .5) / .5)) * ceiling(Y);
+        p.el.style.opacity = (fade * p.peak).toFixed(3);
+        p.el.style.transform = `translate(${X.toFixed(1)}px, ${Y.toFixed(1)}px) translate(-50%, -50%) scale(${(p.s0 * (1 + k * .5)).toFixed(3)})`;
+      }
+    }
+    function dustFrame(now) {
+      const dt = Math.min(.05, (now - dustLast) / 1000); dustLast = now;
+      sizeCanvas();
+      const w = cw, src = mouths();
+      step(dt, w, src); draw(w, src);
+      dustRaf = requestAnimationFrame(dustFrame);
+    }
+    function prewarm(seconds) {
+      sizeCanvas();
+      const w = cw, src = mouths();
+      if (!src.length || !w) return;
+      for (let t = 0; t < seconds; t += 1 / 30) step(1 / 30, w, src);
+    }
+    function startDust() {
+      stopDust();
+      dust.append(plume);
+      if (reduced.matches) {
+        // Static composition: frozen puffs above each stack, a few words caught inside them.
+        prewarm(4.2);
+        words.forEach(p => p.el.remove()); words = [];
+        draw(cw);
+        const w = cw, h = ch;
+        [['foundation models', .4, .5, .55], ['eye tracking', .6, .47, .5], ['Jev', .47, .43, .45], ['embeddings', .64, .41, .35], ['mitotic figures', .7, .52, .5]]
+          .forEach(([t, x, y, o]) => { const el = document.createElement('span'); el.textContent = t; el.style.opacity = o; el.style.transform = `translate(${x * w}px, ${y * h}px) translate(-50%, -50%)`; dust.append(el); });
+        return;
+      }
+      prewarm(2.4);   // plumes are already billowing on the first visible frame
+      dustLast = performance.now();
+      dustRaf = requestAnimationFrame(dustFrame);
+    }
+    function stopDust() { cancelAnimationFrame(dustRaf); dustRaf = 0; words = []; puffs = []; stackTimers = []; wordSpawn = 0; dust.replaceChildren(); }
+    reduced.addEventListener('change', () => { if (!titleSlide.hidden) startDust(); });
+    return { start: startDust, stop: stopDust };
+  }
   const titleSlide = document.getElementById('title');
-  const dust = titleSlide.querySelector('.dust');
-  const WORDS = ['eye tracking', 'mitotic figures', 'foundation models', 'embeddings', 'triage', 'reporting', 'Jev', 'reasoning', 'vision', 'agents', 'math', 'gaze', 'UMAP', 'dictation'];
-  const MAX_WORDS = 16;
-  const plume = document.createElement('canvas');
-  plume.className = 'plume';
-  const pctx = plume.getContext('2d');
-  // Pre-rendered soft puff sprites (no CSS blur filters → cheap at 60fps).
-  const sprite = rgb => {
-    const c = document.createElement('canvas'); c.width = c.height = 128;
-    const g = c.getContext('2d'), gr = g.createRadialGradient(64, 64, 0, 64, 64, 64);
-    gr.addColorStop(0, `rgba(${rgb},1)`); gr.addColorStop(.45, `rgba(${rgb},.55)`); gr.addColorStop(1, `rgba(${rgb},0)`);
-    g.fillStyle = gr; g.fillRect(0, 0, 128, 128); return c;
-  };
-  const SPRITES = [sprite('214,196,158'), sprite('190,178,156'), sprite('201,168,106')];
-  let dustRaf = 0, dustLast = 0, wordSpawn = 0, words = [], puffs = [], stackTimers = [], cw = 0, ch = 0, dpr = 1;
-  // Stack mouths in the slide's own (unscaled) layout units. Measured relative to the
-  // factory drawing, then mapped onto its layout box, so entrance transforms or stage
-  // scaling at the moment of measurement can't misplace the plumes.
-  const site = titleSlide.querySelector('.title-site');
-  const mouths = () => {
-    const tr = site.getBoundingClientRect();
-    if (!tr.width) return [];
-    const W = site.offsetWidth, H = site.offsetHeight, left = site.offsetLeft - W / 2, top = site.offsetTop;
-    return [...titleSlide.querySelectorAll('.stack-mouth')].map(m => {
-      const r = m.getBoundingClientRect();
-      return [left + ((r.left + r.width / 2 - tr.left) / tr.width) * W, top + ((r.top + r.height / 2 - tr.top) / tr.height) * H];
-    });
-  };
-  function sizeCanvas() {
-    const W = titleSlide.clientWidth, H = titleSlide.clientHeight, r = titleSlide.getBoundingClientRect();
-    dpr = .5 * (W ? r.width / W : 1);   // soft puffs need no resolution: half-res canvas keeps fill cost low
-    if (W !== cw || H !== ch) {
-      cw = W; ch = H;
-      plume.width = Math.round(cw * dpr); plume.height = Math.round(ch * dpr); plume.style.width = cw + 'px'; plume.style.height = ch + 'px';
-    }
-  }
-  // Fade everything out before it reaches the title block (top ~35% of the slide).
-  const ceiling = y => Math.max(0, Math.min(1, (y - ch * .34) / (ch * .14)));
-  function spawnPuff(si, w) {
-    puffs.push({ si, x: (Math.random() - .5) * w * .006, y: w * .003, age: 0,
-      life: 4.2 + Math.random() * 1.8, vy: w * (.03 + Math.random() * .014), vx: w * (.006 + Math.random() * .01) + (Math.random() - .5) * w * .012,
-      wind: w * (.012 + Math.random() * .01), r0: w * (.012 + Math.random() * .006), r1: w * (.07 + Math.random() * .05),
-      peak: .1 + Math.random() * .1, spr: SPRITES[Math.random() < .55 ? 0 : (Math.random() < .65 ? 1 : 2)], wob: Math.random() * 6.28 });
-  }
-  function spawnWord(si, w) {
-    const el = document.createElement('span');
-    el.textContent = WORDS[Math.floor(Math.random() * WORDS.length)];
-    dust.append(el);
-    words.push({ el, si, x: (Math.random() - .5) * w * .01, y: -w * .02, age: 0,
-      life: 4 + Math.random() * 1.5, vy: w * (.028 + Math.random() * .01), vx: w * (.008 + Math.random() * .008),
-      wind: w * (.012 + Math.random() * .008), phase: Math.random() * 6.28, amp: w * (.003 + Math.random() * .004),
-      s0: .8 + Math.random() * .3, peak: .6 + Math.random() * .35 });
-  }
-  function step(dt, w, src) {
-    src.forEach((m, i) => {
-      stackTimers[i] = (stackTimers[i] ?? Math.random() * .05) - dt;
-      while (stackTimers[i] <= 0) { spawnPuff(i, w); stackTimers[i] += .07 + Math.random() * .04; }
-    });
-    puffs = puffs.filter(p => {
-      p.age += dt; const k = p.age / p.life; if (k >= 1) return false;
-      p.y -= p.vy * dt * (1 - k * .55);
-      p.x += (p.vx + p.wind * k + Math.sin(p.age * 1.3 + p.wob) * w * .003) * dt;
-      return true;
-    });
-    wordSpawn -= dt;
-    if (wordSpawn <= 0 && words.length < MAX_WORDS && src.length) { spawnWord(Math.floor(Math.random() * src.length), w); wordSpawn = .42 + Math.random() * .25; }
-    words = words.filter(p => {
-      p.age += dt; const k = p.age / p.life;
-      if (k >= 1) { p.el.remove(); return false; }
-      p.y -= p.vy * dt * (1 - k * .55);
-      p.x += (p.vx + p.wind * k + Math.cos(p.age * 1.1 + p.phase) * p.amp) * dt;
-      return true;
-    });
-  }
-  function draw(w, src = mouths()) {
-    if (!src.length) return;
-    pctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    pctx.clearRect(0, 0, cw, ch);
-    for (const p of puffs) {
-      const k = p.age / p.life, r = p.r0 + (p.r1 - p.r0) * Math.sqrt(k);
-      const m = src[p.si] || src[0], X = m[0] + p.x, Y = m[1] + p.y;
-      const a = p.peak * Math.min(1, k / .06) * (1 - k) * ceiling(Y);
-      if (a < .004) continue;
-      pctx.globalAlpha = a;
-      pctx.drawImage(p.spr, X - r, Y - r, r * 2, r * 2);
-    }
-    pctx.globalAlpha = 1;
-    for (const p of words) {
-      const k = p.age / p.life;
-      const m = src[p.si] || src[0], X = m[0] + p.x, Y = m[1] + p.y;
-      const fade = Math.min(1, k / .15) * (1 - Math.max(0, (k - .5) / .5)) * ceiling(Y);
-      p.el.style.opacity = (fade * p.peak).toFixed(3);
-      p.el.style.transform = `translate(${X.toFixed(1)}px, ${Y.toFixed(1)}px) translate(-50%, -50%) scale(${(p.s0 * (1 + k * .5)).toFixed(3)})`;
-    }
-  }
-  function dustFrame(now) {
-    const dt = Math.min(.05, (now - dustLast) / 1000); dustLast = now;
-    sizeCanvas();
-    const w = cw, src = mouths();
-    step(dt, w, src); draw(w, src);
-    dustRaf = requestAnimationFrame(dustFrame);
-  }
-  function prewarm(seconds) {
-    sizeCanvas();
-    const w = cw, src = mouths();
-    if (!src.length || !w) return;
-    for (let t = 0; t < seconds; t += 1 / 30) step(1 / 30, w, src);
-  }
-  function startDust() {
-    stopDust();
-    dust.append(plume);
-    if (reduced.matches) {
-      // Static composition: frozen puffs above each stack, a few words caught inside them.
-      prewarm(4.2);
-      words.forEach(p => p.el.remove()); words = [];
-      draw(cw);
-      const w = cw, h = ch;
-      [['foundation models', .4, .5, .55], ['eye tracking', .6, .47, .5], ['Jev', .47, .43, .45], ['embeddings', .64, .41, .35], ['mitotic figures', .7, .52, .5]]
-        .forEach(([t, x, y, o]) => { const el = document.createElement('span'); el.textContent = t; el.style.opacity = o; el.style.transform = `translate(${x * w}px, ${y * h}px) translate(-50%, -50%)`; dust.append(el); });
-      return;
-    }
-    prewarm(2.4);   // plumes are already billowing on the first visible frame
-    dustLast = performance.now();
-    dustRaf = requestAnimationFrame(dustFrame);
-  }
-  function stopDust() { cancelAnimationFrame(dustRaf); dustRaf = 0; words = []; puffs = []; stackTimers = []; wordSpawn = 0; dust.replaceChildren(); }
-  reduced.addEventListener('change', () => { if (!titleSlide.hidden) startDust(); });
+  const closingSlide = document.getElementById('closing');
+  const scenes = new Map([[titleSlide, plumeScene(titleSlide, .38)], [closingSlide, plumeScene(closingSlide, .40)]]);
+
 
   // ---------- Build-up entrance ----------
   function buildUp(slide) {
@@ -371,7 +378,7 @@
       prevReal.classList.remove('is-active');
       if (prevReal === navier || prevReal === bench) finishReveal(prevReal);
       if (prevReal === fSlide) finishFoundation();
-      if (prevReal === titleSlide) stopDust();
+      if (scenes.has(prevReal)) scenes.get(prevReal).stop();
     }
     current = target;
     slides.forEach(s => { const show = s === el; if (s.hidden === show) s.hidden = !show; });
@@ -398,14 +405,13 @@
     if (el === fSlide) playFoundation();
     if (el === jev && prevReal !== jev) playJevRace();
     if (el.id === 'lung-case') lungStep(Number(logical.dataset.lungStep || 0));
-    if (el.id === 'title') {
+    if (scenes.has(el)) {
       el.classList.remove('is-drawn', 'is-settled');
       void el.offsetWidth;
       el.classList.add('is-drawn');
       setTimeout(() => { if (el.classList.contains('is-drawn')) el.classList.add('is-settled'); }, 2600);
-      if (prevReal !== el) requestAnimationFrame(startDust);
+      if (prevReal !== el) requestAnimationFrame(scenes.get(el).start);
     }
-    if (el.id === 'closing') setBuild(el, 7);
     playVideos(el);
     if (prevReal !== el) buildUp(el);
     if (prev >= 0 && slides[prev].id === 'workload' && target === prev + 1 && !reduced.matches) {
@@ -415,6 +421,10 @@
   }
   const next = () => goTo(current + 1), prev = () => goTo(current - 1);
 
+  // Camp Pods' closing sequence asks for its title slide when it finishes; here that is the Thank-you slide.
+  document.addEventListener('closing-title-request', () => {
+    if (slides[current] && slides[current].id === 'closing-future') goTo(slides.findIndex(s => s.id === 'closing'));
+  });
   function isTyping(t) { return t instanceof Element && t.closest('input, textarea, select, [contenteditable="true"]'); }
   document.addEventListener('pointerdown', e => {
     jevScanFocus = !!(e.target instanceof Element && e.target.closest('#jev-scan .js-stage, #jev-scan .js-panel'));

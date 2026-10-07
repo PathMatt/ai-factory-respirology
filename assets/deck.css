@@ -58,28 +58,28 @@ body { background: #030c16; font-family: var(--sans); -webkit-font-smoothing: an
 .factory .lamp { fill: #ffd98a; opacity: 0; }
 
 /* Title: factory line-art, words rise from the stacks like dust */
-#title .title-site { position: absolute; left: 50%; bottom: 7%; width: 54cqw; height: 23cqw; transform: translateX(-50%); --m-line: rgba(201, 168, 106, .75); }
-#title .title-site .slot, #title .title-site .stack, #title .title-site .ground { fill: none; stroke: var(--m-line); stroke-width: .7; stroke-linejoin: round; stroke-dasharray: 400; stroke-dashoffset: 400; }
-#title.is-drawn .title-site .ground { transition: stroke-dashoffset 1.1s ease-out; stroke-dashoffset: 0; }
-#title.is-drawn .title-site .slot, #title.is-drawn .title-site .stack { transition: stroke-dashoffset 1.8s ease-out calc(var(--i, 3) * 110ms + 300ms); stroke-dashoffset: 0; }
-#title.is-settled .title-site .slot, #title.is-settled .title-site .stack { stroke-dasharray: none; transition: none; }
-#title .stack-mouth { fill: none; stroke: none; }
-#title .factory-art .slot { stroke-width: .75; stroke-dasharray: 1200; stroke-dashoffset: 1200; }
-#title .factory-art .ground { stroke-width: .8; }
-#title .factory-art .det { fill: none; stroke: var(--m-line); stroke-width: .4; stroke-linecap: round; opacity: 0; }
-#title.is-drawn .factory-art .det { transition: opacity 1.2s ease 1.4s; opacity: .7; }
-#title .factory-art .glow { fill: #ffcf7a; stroke: none; opacity: 0; filter: drop-shadow(0 0 1.6px rgba(255, 196, 110, .9)); }
-#title.is-drawn .factory-art .glow { transition: opacity 1s ease 1.8s; opacity: .55; }
-#title.is-settled .factory-art .glow.f1 { animation: winFlicker 5.3s steps(1) infinite; }
-#title.is-settled .factory-art .glow.f2 { animation: winFlicker 7.1s steps(1) 1.3s infinite; }
-#title.is-settled .factory-art .glow.f3 { animation: winFlicker 9.4s steps(1) 2.7s infinite; }
+:is(#title, #closing) .title-site { position: absolute; left: 50%; bottom: 7%; width: 54cqw; height: 23cqw; transform: translateX(-50%); --m-line: rgba(201, 168, 106, .75); }
+:is(#title, #closing) .title-site .slot, :is(#title, #closing) .title-site .stack, :is(#title, #closing) .title-site .ground { fill: none; stroke: var(--m-line); stroke-width: .7; stroke-linejoin: round; stroke-dasharray: 400; stroke-dashoffset: 400; }
+:is(#title, #closing).is-drawn .title-site .ground { transition: stroke-dashoffset 1.1s ease-out; stroke-dashoffset: 0; }
+:is(#title, #closing).is-drawn .title-site .slot, :is(#title, #closing).is-drawn .title-site .stack { transition: stroke-dashoffset 1.8s ease-out calc(var(--i, 3) * 110ms + 300ms); stroke-dashoffset: 0; }
+:is(#title, #closing).is-settled .title-site .slot, :is(#title, #closing).is-settled .title-site .stack { stroke-dasharray: none; transition: none; }
+:is(#title, #closing) .stack-mouth { fill: none; stroke: none; }
+:is(#title, #closing) .factory-art .slot { stroke-width: .75; stroke-dasharray: 1200; stroke-dashoffset: 1200; }
+:is(#title, #closing) .factory-art .ground { stroke-width: .8; }
+:is(#title, #closing) .factory-art .det { fill: none; stroke: var(--m-line); stroke-width: .4; stroke-linecap: round; opacity: 0; }
+:is(#title, #closing).is-drawn .factory-art .det { transition: opacity 1.2s ease 1.4s; opacity: .7; }
+:is(#title, #closing) .factory-art .glow { fill: #ffcf7a; stroke: none; opacity: 0; filter: drop-shadow(0 0 1.6px rgba(255, 196, 110, .9)); }
+:is(#title, #closing).is-drawn .factory-art .glow { transition: opacity 1s ease 1.8s; opacity: .55; }
+:is(#title, #closing).is-settled .factory-art .glow.f1 { animation: winFlicker 5.3s steps(1) infinite; }
+:is(#title, #closing).is-settled .factory-art .glow.f2 { animation: winFlicker 7.1s steps(1) 1.3s infinite; }
+:is(#title, #closing).is-settled .factory-art .glow.f3 { animation: winFlicker 9.4s steps(1) 2.7s infinite; }
 @keyframes winFlicker { 0%, 100% { opacity: .55; } 46% { opacity: .38; } 48% { opacity: .6; } 50% { opacity: .3; } 53% { opacity: .55; } 80% { opacity: .48; } }
-#title .factory-art .gear { transform-box: fill-box; transform-origin: center; }
-#title.is-settled .factory-art .gear { animation: gearSpin 14s linear infinite; }
+:is(#title, #closing) .factory-art .gear { transform-box: fill-box; transform-origin: center; }
+:is(#title, #closing).is-settled .factory-art .gear { animation: gearSpin 14s linear infinite; }
 @keyframes gearSpin { to { transform: rotate(360deg); } }
-#title .dust { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
-#title .dust .plume { position: absolute; left: 0; top: 0; pointer-events: none; }
-#title .dust span { position: absolute; left: 0; top: 0; white-space: nowrap; will-change: transform, opacity; opacity: 0;
+:is(#title, #closing) .dust { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+:is(#title, #closing) .dust .plume { position: absolute; left: 0; top: 0; pointer-events: none; }
+:is(#title, #closing) .dust span { position: absolute; left: 0; top: 0; white-space: nowrap; will-change: transform, opacity; opacity: 0;
   font: 500 1.05cqw/1 var(--mono); color: #fbf6ea; letter-spacing: .02em; text-shadow: 0 0 .5cqw rgba(6, 24, 42, .55); }
 #title .title-copy { position: absolute; left: 0; right: 0; top: 17%; text-align: center; z-index: 2; }
 #title h1 { margin: 0; font: 600 4.8cqw/1.05 var(--sans); letter-spacing: -.045em; color: #f4efe2; text-shadow: 0 0 2.4cqw var(--navy), 0 0 1.2cqw var(--navy); }
@@ -187,7 +187,8 @@ body { background: #030c16; font-family: var(--sans); -webkit-font-smoothing: an
 
 /* Closing */
 #closing .closing-site { position: absolute; left: 50%; top: 13%; width: 40cqw; height: 17cqw; transform: translateX(-50%); --m-line: rgba(201, 168, 106, .55); }
-#closing .closing-copy { position: absolute; left: 0; right: 0; top: 56%; text-align: center; }
+#closing .closing-copy { position: absolute; left: 0; right: 0; top: 11%; text-align: center; z-index: 2; }
+#closing h2 { text-shadow: 0 0 2.4cqw var(--navy), 0 0 1.2cqw var(--navy); }
 #closing h2 { margin: 0; font: 600 5.6cqw/1 var(--sans); letter-spacing: -.05em; color: #f4efe2; }
 #closing .closing-q { margin: 1.4cqw 0 0; font: 400 2.2cqw/1 var(--sans); color: var(--brass-2); }
 #closing .closing-name { margin: 3cqw 0 0; font: 500 1.05cqw/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: rgba(233, 228, 216, .6); }
@@ -200,13 +201,20 @@ body { background: #030c16; font-family: var(--sans); -webkit-font-smoothing: an
 @media (prefers-reduced-motion: reduce) {
   .factory .blk, .progress i { transition: none; }
   .sweep.run { animation: none; }
-  #title .title-site .slot, #title .title-site .stack, #title .title-site .ground { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; transition: none !important; }
-  #title .factory-art .det { opacity: .7 !important; transition: none !important; }
-  #title .factory-art .glow { opacity: .55 !important; transition: none !important; animation: none !important; }
-  #title .factory-art .gear { animation: none !important; }
+  :is(#title, #closing) .title-site .slot, :is(#title, #closing) .title-site .stack, :is(#title, #closing) .title-site .ground { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; transition: none !important; }
+  :is(#title, #closing) .factory-art .det { opacity: .7 !important; transition: none !important; }
+  :is(#title, #closing) .factory-art .glow { opacity: .55 !important; transition: none !important; animation: none !important; }
+  :is(#title, #closing) .factory-art .gear { animation: none !important; }
   #build-on .ex { opacity: 1; transform: none; animation: none !important; }
   #closing.is-active .factory .smoke { animation: none; }
   #closing.is-active .factory .lamp { animation: none; opacity: 1; }
 }
 
 #jev-scan .js-restart { right: 7%; }
+
+/* Head-tracking slide: Matt's video is the large component */
+#head-input .input-video-stage { left: 50%; right: auto; top: 24%; bottom: auto; width: 70cqw; height: 39.4cqw; transform: translateX(-50%); }
+#head-input .input-video-inset { width: 27%; right: 1.2%; bottom: 2.5%; }
+
+#title .title-copy p.title-role { margin-top: .9cqw; }
+#closing .closing-name { margin-top: 2cqw; }
