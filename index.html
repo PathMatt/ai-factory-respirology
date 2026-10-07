@@ -10,12 +10,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-  <link rel="stylesheet" href="assets/cp.css?v=202610071811">
-  <link rel="stylesheet" href="assets/lung-case.css?v=202610071811">
-  <link rel="stylesheet" href="assets/jev-cells/cell-finder.css?v=202610071811">
-  <link rel="stylesheet" href="assets/jev-scan/jev-scan.css?v=202610071811">
-  <link rel="stylesheet" href="assets/jev-l4e/l4e.css?v=202610071811">
-  <link rel="stylesheet" href="assets/deck.css?v=202610071811">
+  <link rel="stylesheet" href="assets/cp.css?v=202610071816">
+  <link rel="stylesheet" href="assets/lung-case.css?v=202610071816">
+  <link rel="stylesheet" href="assets/jev-cells/cell-finder.css?v=202610071816">
+  <link rel="stylesheet" href="assets/jev-scan/jev-scan.css?v=202610071816">
+  <link rel="stylesheet" href="assets/jev-l4e/l4e.css?v=202610071816">
+  <link rel="stylesheet" href="assets/deck.css?v=202610071816">
 </head>
 <body>
   <main class="deck" id="deck" aria-live="off">
@@ -392,6 +392,17 @@
     <!-- 18 · Lung case, final step (CP #54, same lung-case instance) -->
     <section class="slide" id="lung-final" data-alias="lung-case" data-lung-step="6" data-build="7" data-chapter="Report | lung case" data-heading="Every finding has a place." data-notes="Back to the lung. Every finding has a place: tumour 8.2 mm, STAS present, pleura unresolved, an LVI focus. Click any one to return to its evidence. A draft, for pathologist review."></section>
 
+    <!-- Ask Osler: MyPathologyReport embedded live (iframe loads on first visit) -->
+    <section class="slide" id="osler" data-build="7" data-notes="Osler, live: ask MyPathologyReport a question in plain language. Click outside the frame to hand the keys back to the slides.">
+      <p class="chapter">Closing | ask Osler</p>
+      <h2 class="fork-heading" id="osler-heading">Ask Osler</h2>
+      <div class="osler-frame">
+        <iframe title="MyPathologyReport — ask Osler" data-src="https://www.mypathologyreport.ca" referrerpolicy="strict-origin-when-cross-origin" allow="clipboard-write"></iframe>
+        <a class="osler-fallback" href="https://www.mypathologyreport.ca" target="_blank" rel="noopener noreferrer" hidden>The site could not be shown here · open MyPathologyReport ↗</a>
+      </div>
+      <a class="live-link" href="https://www.mypathologyreport.ca" target="_blank" rel="noopener noreferrer">open in new tab ↗</a>
+    </section>
+
         <!-- The future we can build (CP #56) -->
     <section class="slide lab-walkthrough" id="closing-future" aria-labelledby="closing-future-heading" data-build="7" data-notes="The future we can build. The work keeps coming; this is how we meet it. Illustrative, with the pathologist reviewing.">
       <p class="chapter">Closing | the future</p>
@@ -420,16 +431,16 @@
     <aside class="notes-panel" hidden><p class="notes-text"></p></aside>
   </main>
 
-  <script src="assets/dpv/ontario-geography.js?v=202610071811"></script>
-  <script src="assets/dpv/pathology-maps.js?v=202610071811"></script>
-  <script src="assets/deck.js?v=202610071811"></script>
-  <script src="assets/vendor/openseadragon.min.js?v=202610071811"></script>
-  <script type="module" src="assets/cluster-embeddings.js?v=202610071811"></script>
-  <script type="module" src="assets/inputs.js?v=202610071811"></script>
-  <script type="module" src="assets/lung-case.js?v=202610071811"></script>
-  <script type="module" src="assets/closing-future.js?v=202610071811"></script>
-  <script type="module" src="assets/jev-cells/cell-finder.js?v=202610071811"></script>
-  <script type="module" src="assets/jev-scan/jev-scan.js?v=202610071811"></script>
-  <script type="module" src="assets/jev-l4e/l4e.js?v=202610071811"></script>
+  <script src="assets/dpv/ontario-geography.js?v=202610071816"></script>
+  <script src="assets/dpv/pathology-maps.js?v=202610071816"></script>
+  <script src="assets/deck.js?v=202610071816"></script>
+  <script src="assets/vendor/openseadragon.min.js?v=202610071816"></script>
+  <script type="module" src="assets/cluster-embeddings.js?v=202610071816"></script>
+  <script type="module" src="assets/inputs.js?v=202610071816"></script>
+  <script type="module" src="assets/lung-case.js?v=202610071816"></script>
+  <script type="module" src="assets/closing-future.js?v=202610071816"></script>
+  <script type="module" src="assets/jev-cells/cell-finder.js?v=202610071816"></script>
+  <script type="module" src="assets/jev-scan/jev-scan.js?v=202610071816"></script>
+  <script type="module" src="assets/jev-l4e/l4e.js?v=202610071816"></script>
 </body>
 </html>

@@ -395,6 +395,19 @@
     x.addEventListener('pointerleave', () => focus(false));
   });
 
+  // Ask Osler: the MyPathologyReport iframe loads on first visit; if it never loads, offer a new tab instead.
+  const oslerSlide = document.getElementById('osler'), oslerFrame = oslerSlide.querySelector('iframe');
+  let oslerHadFocus = false;
+  function loadOsler() {
+    if (oslerFrame.src) return;
+    let loaded = false;
+    oslerFrame.addEventListener('load', () => { loaded = true; }, { once: true });
+    oslerFrame.src = oslerFrame.dataset.src;
+    setTimeout(() => { if (!loaded) { oslerFrame.hidden = true; oslerSlide.querySelector('.osler-fallback').hidden = false; } }, 15000);
+  }
+  // A click outside the frame while it holds focus only hands the keys back to the deck; it doesn't advance.
+  document.addEventListener('pointerdown', () => { oslerHadFocus = document.activeElement === oslerFrame; }, true);
+
   // Lung case: one lung-case.js instance serves two slides; jump the tour to the slide's step.
   function lungStep(step) {
     const sl = document.getElementById('lung-case');
@@ -450,6 +463,7 @@
     if (el === navier || el === bench) playReveal(el);
     if (el === fSlide) playFoundation();
     if (el === hpSlide && prevReal !== hpSlide) resetHp();
+    if (el === oslerSlide) loadOsler();
     if (el.id === 'lung-case') lungStep(Number(logical.dataset.lungStep || 0));
     if (scenes.has(el)) {
       el.classList.remove('is-drawn', 'is-settled');
@@ -478,7 +492,7 @@
 
   window.addEventListener('keydown', e => {
     if (e.altKey || e.ctrlKey || e.metaKey) return;
-    if (isTyping(e.target)) return;
+    if (isTyping(e.target) || document.activeElement === oslerFrame) return;
     if (e.target instanceof Element && e.target.closest('.lung-source-panel')) return;
     const el = real(slides[current]);
     const k = e.key;
@@ -503,10 +517,11 @@
     }
   }, true);
 
-  const INTERACTIVE = 'a, button, input, textarea, select, video, canvas, label, [role="dialog"], .lung-workspace, .cluster-interactive, .js-stage, .js-panel, .cf-shelf, .cf-result, .hp-results, .input-vm-stage, .openseadragon-container, .notes-panel';
+  const INTERACTIVE = 'a, button, input, textarea, select, video, canvas, label, [role="dialog"], .lung-workspace, .cluster-interactive, .js-stage, .js-panel, .cf-shelf, .cf-result, .hp-results, iframe, .osler-frame, .input-vm-stage, .openseadragon-container, .notes-panel';
   deck.addEventListener('click', e => {
     if (!(e.target instanceof Element) || e.target.closest(INTERACTIVE)) return;
     if (e.target.closest('#london')) return;   // pathology-maps.js handles clicks on its own slide
+    if (oslerHadFocus && real(slides[current]) === oslerSlide) { oslerHadFocus = false; return; }
     if (getSelection && String(getSelection()).length) return;
     const el = real(slides[current]);
     if (el.id === 'cluster-embeddings' && el.dataset.revealed !== 'true') { document.dispatchEvent(new Event('cluster-cancer-reveal')); return; }

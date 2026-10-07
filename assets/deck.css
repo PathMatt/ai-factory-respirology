@@ -262,3 +262,10 @@ body { background: #030c16; font-family: var(--sans); -webkit-font-smoothing: an
 #london .controls button:hover { color: var(--ink); }
 #london .controls button:focus-visible { outline: 1px solid var(--ink); outline-offset: 5px; }
 
+/* Ask Osler: MyPathologyReport, nearly full-slide */
+#osler .fork-heading { font-size: 2cqw; top: 9.6%; }
+#osler .osler-frame { position: absolute; left: 9.5%; right: 7%; top: 17%; bottom: 5%; border: 1px solid #16161633; background: #fff; }
+#osler .osler-frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+#osler .osler-fallback { position: absolute; inset: 0; margin: auto; width: max-content; height: max-content; padding: 1.4cqw 2.4cqw; font: 500 1.4cqw/1 var(--sans); color: #fafaf8; background: var(--ink); text-decoration: none; }
+#osler .osler-fallback[hidden] { display: none; }
+
