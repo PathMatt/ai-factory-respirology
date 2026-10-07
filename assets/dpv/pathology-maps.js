@@ -21,7 +21,7 @@ const regionSites=[{name:'St. Thomas',ll:[-81.180,42.756],label:[970,755]},{name
 const clamp=n=>Math.max(0,Math.min(1,n)),ease=n=>{n=clamp(n);return n*n*(3-2*n)},mix=(a,b,p)=>a+(b-a)*p;
 function fade(g,t,start,duration=600){g.style.opacity=clamp((t-start)/duration)}
 function draw(g,t,start,duration=950){g.querySelectorAll('path').forEach(p=>{p.setAttribute('pathLength','1');p.style.strokeDasharray=1;p.style.strokeDashoffset=1-ease((t-start)/duration)})}
-function makeMap(id,regional){const svg=document.querySelector(`#${id} svg`),defs=E('defs',{},svg),clip=E('clipPath',{id:`clip-${id}`},defs);E('rect',{x:125,y:205,width:1350,height:615},clip);const canvas=G(svg,{'clip-path':`url(#clip-${id})`}),world=G(canvas),roads=G(world),river=G(world);
+function makeMap(id,regional){if(!document.querySelector(`#${id} svg`))return null;const svg=document.querySelector(`#${id} svg`),defs=E('defs',{},svg),clip=E('clipPath',{id:`clip-${id}`},defs);E('rect',{x:125,y:205,width:1350,height:615},clip);const canvas=G(svg,{'clip-path':`url(#clip-${id})`}),world=G(canvas),roads=G(world),river=G(world);
 // Minimal schematic roads connect the three hospital entrances.
 const cityRoutes=[
 'M 754 720 H 820 Q 840 720 840 700 V 570 Q 840 550 820 550 H 650 Q 628 550 628 528 V 480',
@@ -143,7 +143,7 @@ regionalPins.forEach(({g,icon,label,line,s},i)=>{const [px,py]=s.point;g.setAttr
 if(consultations)consultations.render(t);
 }render(0);return{render,duration:regional?22100:23900};}
 
-const scenes={london:makeMap('london',false),region:makeMap('region',true)},seen=new Set();
+const scenes=Object.fromEntries(Object.entries({london:makeMap('london',false),region:makeMap('region',true)}).filter(([,v])=>v)),seen=new Set();
 let active=null,raf=0,start=0,playing=false;
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 function finish(){cancelAnimationFrame(raf);playing=false;if(active)scenes[active].render(scenes[active].duration)}

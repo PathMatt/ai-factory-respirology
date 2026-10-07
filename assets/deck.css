@@ -248,3 +248,17 @@ body { background: #030c16; font-family: var(--sans); -webkit-font-smoothing: an
 /* L4E (CP #41): Camp Pods places its subtitle at 17%; drop it below this deck's heading */
 #l4e .l4e-sub { top: 18.5%; }
 #l4e .l4e-left, #l4e .l4e-right { top: 23.5%; }
+
+/* London hospital map (Digital Pathology Vision #35), scoped so nothing else changes */
+#london .map { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; }
+#london .map text { font-family: inherit; fill: var(--ink); }
+#london .ink, #london .map .ink { stroke-linecap: round; stroke-linejoin: round; }
+#london .map .muted { fill: #85857e; }
+#london .paper { fill: var(--paper); }
+#london .label { paint-order: stroke; stroke: var(--paper); stroke-width: 9px; stroke-linejoin: round; }
+#london .controls { position: absolute; right: 7%; bottom: 4.3%; display: flex; gap: 1.3cqw; align-items: center; z-index: 3; font-size: .95cqw; color: #77776f; }
+#london .controls[hidden] { display: none; }
+#london .controls button { font: inherit; color: inherit; background: none; border: 0; padding: .4em 0; cursor: pointer; }
+#london .controls button:hover { color: var(--ink); }
+#london .controls button:focus-visible { outline: 1px solid var(--ink); outline-offset: 5px; }
+

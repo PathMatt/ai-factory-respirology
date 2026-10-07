@@ -10,12 +10,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-  <link rel="stylesheet" href="assets/cp.css?v=202610071802">
-  <link rel="stylesheet" href="assets/lung-case.css?v=202610071802">
-  <link rel="stylesheet" href="assets/jev-cells/cell-finder.css?v=202610071802">
-  <link rel="stylesheet" href="assets/jev-scan/jev-scan.css?v=202610071802">
-  <link rel="stylesheet" href="assets/jev-l4e/l4e.css?v=202610071802">
-  <link rel="stylesheet" href="assets/deck.css?v=202610071802">
+  <link rel="stylesheet" href="assets/cp.css?v=202610071811">
+  <link rel="stylesheet" href="assets/lung-case.css?v=202610071811">
+  <link rel="stylesheet" href="assets/jev-cells/cell-finder.css?v=202610071811">
+  <link rel="stylesheet" href="assets/jev-scan/jev-scan.css?v=202610071811">
+  <link rel="stylesheet" href="assets/jev-l4e/l4e.css?v=202610071811">
+  <link rel="stylesheet" href="assets/deck.css?v=202610071811">
 </head>
 <body>
   <main class="deck" id="deck" aria-live="off">
@@ -283,6 +283,13 @@
       <p class="foundation-source">FROST · frozen-section screening · 97 cases · 331 slides · Josh Del Papa</p>
     </section>
 
+    <!-- 13b · London hospital map (Digital Pathology Vision #35) -->
+    <section class="slide" id="london" aria-labelledby="london-heading" data-build="5" data-notes="Where this lands at LHSC: three hospitals, the scanners at each, and the trucks and cabs that move glass and pathologists between them. Digital moves the slide instead.">
+      <p class="chapter">Triage | LHSC</p>
+      <h2 class="fork-heading" id="london-heading">Digital pathology at LHSC</h2><svg class="map" viewBox="0 0 1600 900" role="img" aria-label="London hospital landscape with connecting roads, a pathologist at a desk at Victoria, a second pathologist taking a cab from University Hospital to St. Joseph’s, and specimen trucks travelling from both hospitals to University. University Hospital: Aperio AT II, two Grundium Ocus scanners, and a Pramana Spectral M. Victoria Hospital: Pramana Spectral M. St. Joseph’s Hospital: Spectral M with a question mark."></svg>
+      <nav class="controls" aria-label="Map animation controls" hidden><button type="button" id="previous" aria-label="Previous slide">←</button><button type="button" id="replay">Replay</button><button type="button" id="next" aria-label="Next slide">→</button></nav>
+    </section>
+
     <!-- 14 · Triage + biomarker ordering (biomarker deck #77) -->
     <section class="slide" id="build-on" data-build="5" data-notes="Same idea for biopsies. The scanned slide goes through a foundation model and a small classifier; a cancer is triaged and its biomarkers ordered before anyone opens the case. Lung: PD-L1, ALK, NGS.">
       <p class="chapter">Triage | biomarkers</p>
@@ -413,14 +420,16 @@
     <aside class="notes-panel" hidden><p class="notes-text"></p></aside>
   </main>
 
-  <script src="assets/deck.js?v=202610071802"></script>
-  <script src="assets/vendor/openseadragon.min.js?v=202610071802"></script>
-  <script type="module" src="assets/cluster-embeddings.js?v=202610071802"></script>
-  <script type="module" src="assets/inputs.js?v=202610071802"></script>
-  <script type="module" src="assets/lung-case.js?v=202610071802"></script>
-  <script type="module" src="assets/closing-future.js?v=202610071802"></script>
-  <script type="module" src="assets/jev-cells/cell-finder.js?v=202610071802"></script>
-  <script type="module" src="assets/jev-scan/jev-scan.js?v=202610071802"></script>
-  <script type="module" src="assets/jev-l4e/l4e.js?v=202610071802"></script>
+  <script src="assets/dpv/ontario-geography.js?v=202610071811"></script>
+  <script src="assets/dpv/pathology-maps.js?v=202610071811"></script>
+  <script src="assets/deck.js?v=202610071811"></script>
+  <script src="assets/vendor/openseadragon.min.js?v=202610071811"></script>
+  <script type="module" src="assets/cluster-embeddings.js?v=202610071811"></script>
+  <script type="module" src="assets/inputs.js?v=202610071811"></script>
+  <script type="module" src="assets/lung-case.js?v=202610071811"></script>
+  <script type="module" src="assets/closing-future.js?v=202610071811"></script>
+  <script type="module" src="assets/jev-cells/cell-finder.js?v=202610071811"></script>
+  <script type="module" src="assets/jev-scan/jev-scan.js?v=202610071811"></script>
+  <script type="module" src="assets/jev-l4e/l4e.js?v=202610071811"></script>
 </body>
 </html>

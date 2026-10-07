@@ -484,6 +484,7 @@
     const k = e.key;
     const fwd = ['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Spacebar'].includes(k);
     const back = ['ArrowLeft', 'ArrowUp', 'PageUp'].includes(k);
+    if (el.id === 'london' && window.pathologyMaps?.handleKey(e, el.id)) { e.stopImmediatePropagation(); return; }   // DPV map: first press finishes the animation
     if (k.startsWith('Arrow') && el.id === 'jev-scan' && jevScanFocus && el.classList.contains('is-paused')) return; // Jev pans the slide
     if (k === ' ' && e.target instanceof Element && e.target.closest('button, a')) return;
     if (fwd || back) {
@@ -505,6 +506,7 @@
   const INTERACTIVE = 'a, button, input, textarea, select, video, canvas, label, [role="dialog"], .lung-workspace, .cluster-interactive, .js-stage, .js-panel, .cf-shelf, .cf-result, .hp-results, .input-vm-stage, .openseadragon-container, .notes-panel';
   deck.addEventListener('click', e => {
     if (!(e.target instanceof Element) || e.target.closest(INTERACTIVE)) return;
+    if (e.target.closest('#london')) return;   // pathology-maps.js handles clicks on its own slide
     if (getSelection && String(getSelection()).length) return;
     const el = real(slides[current]);
     if (el.id === 'cluster-embeddings' && el.dataset.revealed !== 'true') { document.dispatchEvent(new Event('cluster-cancer-reveal')); return; }
@@ -512,6 +514,8 @@
     next();
   });
 
+  // Digital Pathology Vision map asks the deck to move (its controls, clicks and keys).
+  document.addEventListener('pathology-navigate', e => { const d = e.detail; goTo(d.edge === 'Home' ? 0 : d.edge === 'End' ? slides.length - 1 : current + d.delta); });
   window.addEventListener('hashchange', () => { const n = parseInt(location.hash.slice(1), 10); if (n >= 1 && n !== current + 1) goTo(n - 1); });
   document.addEventListener('visibilitychange', () => {
     if (current < 0) return;
