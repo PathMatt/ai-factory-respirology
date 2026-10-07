@@ -10,11 +10,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-  <link rel="stylesheet" href="assets/cp.css">
-  <link rel="stylesheet" href="assets/lung-case.css">
-  <link rel="stylesheet" href="assets/jev-cells/cell-finder.css">
-  <link rel="stylesheet" href="assets/jev-scan/jev-scan.css">
-  <link rel="stylesheet" href="assets/deck.css">
+  <link rel="stylesheet" href="assets/cp.css?v=202610071802">
+  <link rel="stylesheet" href="assets/lung-case.css?v=202610071802">
+  <link rel="stylesheet" href="assets/jev-cells/cell-finder.css?v=202610071802">
+  <link rel="stylesheet" href="assets/jev-scan/jev-scan.css?v=202610071802">
+  <link rel="stylesheet" href="assets/jev-l4e/l4e.css?v=202610071802">
+  <link rel="stylesheet" href="assets/deck.css?v=202610071802">
 </head>
 <body>
   <main class="deck" id="deck" aria-live="off">
@@ -298,28 +299,27 @@
       <p class="foundation-source">Each exit is a lab-developed test, validated locally, with a pathologist confirming the diagnosis.</p>
     </section>
 
-    <!-- 15 · Jev (CP #38) -->
-    <section class="slide" id="jev" data-stage="2" data-build="6" data-notes="A new class of model: fast, typed decisions instead of free text. Vendor-reported 70 to 500 milliseconds, against 3 to 329 seconds for frontier models.">
-      <p class="chapter">Jev | System One</p>
-      <h2 class="fork-heading" id="jev-heading">System One models: Jev</h2>
-      <div class="jev-figs">
-        <p class="jev-fig fast"><b>70–500 ms</b><span>Jev · per decision</span></p>
-        <p class="jev-fig"><b>3–329 s</b><span>frontier models</span></p>
-        <p class="jev-vendor">vendor-reported</p>
+    <!-- 15 · HP exposure history (replaces Jev System One, CP #38) -->
+    <section class="slide" id="hp-history" data-build="6" data-notes="A synthetic social history: everything a thorough note captures. Ask one question, and the exposures come back with the sentence each one came from. The birds were buried in the pets line.">
+      <p class="chapter">Jev | history</p>
+      <h2 class="fork-heading" id="hp-history-heading">Reading the social history</h2>
+      <article class="hp-note" aria-label="Synthetic social history">
+        <p class="hp-note-h">Social history</p>
+        <p>67-year-old retired high-school chemistry teacher, 31 years in the classroom, retired 2019. <span class="hp-hl" data-hit="5">Works part-time in a woodworking shop in the detached garage, mostly maple and oak; wears a dust mask inconsistently.</span> Lives with spouse in a 1920s farmhouse on a rural property, on well water. <span class="hp-hl" data-hit="3">The basement flooded in spring 2023; there is ongoing water staining and a musty smell in the back room.</span> Heats with a forced-air gas furnace and a wood stove in winter.</p>
+        <p>Former smoker, 15 pack-years, quit 1998; no vaping or cannabis. Two to three glasses of red wine a week. Winters in Arizona each February for the past four years; Portugal in 2024; no known TB contacts.</p>
+        <p><span class="hp-hl" data-hit="2">Sleeps with a down duvet and two feather pillows, replaced about five years ago.</span> <span class="hp-hl" data-hit="4">Uses an outdoor hot tub on the back deck three to four evenings a week, year-round.</span> Pets: an elderly Labrador; <span class="hp-hl" data-hit="1">two budgerigars and a cockatiel, kept in the living room for 12 years, cage cleaned weekly by the patient.</span> Grows vegetables and keeps a compost pile; no farm animals since childhood. Volunteers Saturdays at the local library.</p>
+      </article>
+      <div class="hp-panel">
+        <div class="hp-query"><span class="hp-query-text">Screen for hypersensitivity pneumonitis exposures</span><button type="button" class="hp-run">Run</button></div>
+        <ol class="hp-results" aria-live="polite">
+          <li class="hp-hit primary" data-hit="1"><i>1</i><div><b>Pet birds</b><span>Avian antigen · bird fancier's lung</span></div><em>primary</em></li>
+          <li class="hp-hit" data-hit="2"><i>2</i><div><b>Feather bedding</b><span>Avian antigen</span></div><em>possible</em></li>
+          <li class="hp-hit" data-hit="3"><i>3</i><div><b>Water damage, mould</b><span>Fungal antigen</span></div><em>possible</em></li>
+          <li class="hp-hit" data-hit="4"><i>4</i><div><b>Hot tub</b><span>Mycobacterium avium complex</span></div><em>possible</em></li>
+          <li class="hp-hit" data-hit="5"><i>5</i><div><b>Wood dust</b><span>Woodworker's lung</span></div><em>possible</em></li>
+        </ol>
       </div>
-      <div class="jev-race" data-from="2" aria-hidden="true">
-        <p class="jev-prompt">Chronic active gastritis on H&amp;E. Order a Warthin-Starry?</p>
-        <div class="jev-lane jev-llm">
-          <header><div>Frontier LLM <span>token by token</span></div><div class="jev-clock" data-clock="llm">0.0 s</div></header>
-          <p class="jev-out" data-out="llm"></p>
-        </div>
-        <div class="jev-lane jev-fast">
-          <header><div>Jev <span>one parallel query</span></div><div class="jev-clock" data-clock="jev">0.0 s</div></header>
-          <p class="jev-out" data-out="jev"></p>
-        </div>
-        <button type="button" class="jev-replay">Replay</button>
-      </div>
-      <p class="foundation-source">TypeSafe AI. Introducing System One models and Jev. Sep 26, 2026 · Vendor-reported figures · Race timing illustrative</p>
+      <p class="foundation-source">Synthetic case — not a real patient · scripted demonstration</p>
     </section>
 
     <!-- 16 · Jev cell finder (CP #39) -->
@@ -364,6 +364,23 @@
       <p class="foundation-source">CAMELYON16 tumor_091 · H&amp;E OD sensor, 128 × 112 cells of 109 µm · typesafe-ai/jev via AI Gateway · research demo, not a diagnosis</p>
       <a class="live-link" href="https://camp-pods.vercel.app" target="_blank" rel="noopener noreferrer">open live demo ↗</a>
     </section>
+    <!-- 18 · Jev codes workload: L4E (CP #41) -->
+    <section class="slide" id="l4e" aria-labelledby="l4e-heading" data-build="6" data-notes="Jev codes workload. Typed questions, several asked twice for redundancy, then the 2014 L4E workbook rules applied to the answers.">
+      <p class="chapter">Jev | workload</p>
+      <h2 class="fork-heading" id="l4e-heading">Jev codes workload: L4E</h2>
+      <p class="l4e-sub">Typed questions with redundancy · the 2014 coding workbook rules applied to Jev's answers</p>
+      <div class="l4e-left">
+        <div class="l4e-examples"><button type="button" data-example="biopsy">Biopsy example</button><button type="button" data-example="resection">Resection example</button><button type="button" class="l4e-run">Run Jev</button></div>
+        <textarea class="l4e-text" spellcheck="false" aria-label="Pathology report to code"></textarea>
+        <p class="l4e-stats">Choose an example or paste a report, then run Jev.</p>
+      </div>
+      <div class="l4e-right">
+        <div class="l4e-total" aria-live="polite"></div>
+        <div class="l4e-results" aria-live="polite"></div>
+      </div>
+      <p class="foundation-source">Synthetic reports · L4E levels L1 0.125 to L6 10 · 7,560 L4E per pathologist per year over 210 days · typesafe-ai/jev via AI Gateway · demonstration only</p>
+      <a class="live-link" href="https://camp-pods.vercel.app" target="_blank" rel="noopener noreferrer">open live demo ↗</a>
+    </section>
 
     <!-- 18 · Lung case, final step (CP #54, same lung-case instance) -->
     <section class="slide" id="lung-final" data-alias="lung-case" data-lung-step="6" data-build="7" data-chapter="Report | lung case" data-heading="Every finding has a place." data-notes="Back to the lung. Every finding has a place: tumour 8.2 mm, STAS present, pleura unresolved, an LVI focus. Click any one to return to its evidence. A draft, for pathologist review."></section>
@@ -385,7 +402,7 @@
       <div class="closing-copy">
         <h2>Thank you</h2>
         <p class="closing-q">Questions</p>
-        <p class="closing-name">Matt Cecchini, MD</p>
+        <p class="closing-name">Matt Cecchini, MD PhD FRCPC</p>
       </div>
     </section>
 
@@ -396,13 +413,14 @@
     <aside class="notes-panel" hidden><p class="notes-text"></p></aside>
   </main>
 
-  <script src="assets/deck.js"></script>
-  <script src="assets/vendor/openseadragon.min.js"></script>
-  <script type="module" src="assets/cluster-embeddings.js"></script>
-  <script type="module" src="assets/inputs.js"></script>
-  <script type="module" src="assets/lung-case.js"></script>
-  <script type="module" src="assets/closing-future.js"></script>
-  <script type="module" src="assets/jev-cells/cell-finder.js"></script>
-  <script type="module" src="assets/jev-scan/jev-scan.js"></script>
+  <script src="assets/deck.js?v=202610071802"></script>
+  <script src="assets/vendor/openseadragon.min.js?v=202610071802"></script>
+  <script type="module" src="assets/cluster-embeddings.js?v=202610071802"></script>
+  <script type="module" src="assets/inputs.js?v=202610071802"></script>
+  <script type="module" src="assets/lung-case.js?v=202610071802"></script>
+  <script type="module" src="assets/closing-future.js?v=202610071802"></script>
+  <script type="module" src="assets/jev-cells/cell-finder.js?v=202610071802"></script>
+  <script type="module" src="assets/jev-scan/jev-scan.js?v=202610071802"></script>
+  <script type="module" src="assets/jev-l4e/l4e.js?v=202610071802"></script>
 </body>
 </html>

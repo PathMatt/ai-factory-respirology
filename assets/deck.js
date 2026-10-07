@@ -130,19 +130,47 @@
   function plumeScene(titleSlide, ceil0) {
     const dust = titleSlide.querySelector('.dust');
     const WORDS = ['eye tracking', 'mitotic figures', 'foundation models', 'embeddings', 'triage', 'reporting', 'Jev', 'reasoning', 'vision', 'agents', 'math', 'gaze', 'UMAP', 'dictation'];
-    const MAX_WORDS = 16;
+    const MAX_WORDS = 9;
     const plume = document.createElement('canvas');
     plume.className = 'plume';
     const pctx = plume.getContext('2d');
-    // Pre-rendered soft puff sprites (no CSS blur filters → cheap at 60fps).
-    const sprite = rgb => {
+    // Pre-rendered smoke sprites (no CSS blur filters → cheap at 60fps).
+    // Billows: clusters of soft lobes, lit from above with a greyer underside, so each puff reads as volume.
+    const haze = rgb => {
       const c = document.createElement('canvas'); c.width = c.height = 128;
       const g = c.getContext('2d'), gr = g.createRadialGradient(64, 64, 0, 64, 64, 64);
-      gr.addColorStop(0, `rgba(${rgb},1)`); gr.addColorStop(.45, `rgba(${rgb},.55)`); gr.addColorStop(1, `rgba(${rgb},0)`);
+      gr.addColorStop(0, `rgba(${rgb},1)`); gr.addColorStop(.45, `rgba(${rgb},.5)`); gr.addColorStop(1, `rgba(${rgb},0)`);
       g.fillStyle = gr; g.fillRect(0, 0, 128, 128); return c;
     };
-    const SPRITES = [sprite('214,196,158'), sprite('190,178,156'), sprite('201,168,106')];
-    let dustRaf = 0, dustLast = 0, wordSpawn = 0, words = [], puffs = [], stackTimers = [], cw = 0, ch = 0, dpr = 1;
+    const billow = (seed, lit, mid, shade) => {
+      let s = seed;
+      const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+      const S = 192, c = document.createElement('canvas'); c.width = c.height = S;
+      const g = c.getContext('2d'), lobes = [];
+      const n = 10 + Math.floor(rnd() * 6);
+      for (let i = 0; i < n; i++) {
+        const a = rnd() * 6.283, d = Math.pow(rnd(), .7) * 46;
+        lobes.push([96 + Math.cos(a) * d, 100 + Math.sin(a) * d * .8, Math.max(16, 42 - d * .45 + rnd() * 10)]);
+      }
+      lobes.sort((p, q) => q[1] - p[1]);   // lower lobes first, lit upper lobes overlap them
+      for (const [x, y, r] of lobes) {
+        const gr = g.createRadialGradient(x - r * .28, y - r * .34, 0, x, y, r);
+        gr.addColorStop(0, `rgba(${lit},.95)`); gr.addColorStop(.42, `rgba(${mid},.6)`);
+        gr.addColorStop(.8, `rgba(${shade},.22)`); gr.addColorStop(1, `rgba(${shade},0)`);
+        g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, 6.283); g.fill();
+      }
+      g.globalCompositeOperation = 'source-atop';
+      const v = g.createLinearGradient(0, 40, 0, 170);
+      v.addColorStop(0, 'rgba(255,244,220,.12)'); v.addColorStop(.55, 'rgba(120,112,100,0)'); v.addColorStop(1, 'rgba(14,26,40,.45)');
+      g.fillStyle = v; g.fillRect(0, 0, S, S);
+      return c;
+    };
+    const BILLOWS = [];
+    for (let i = 0; i < 8; i++) BILLOWS.push(i % 3 === 2
+      ? billow(7919 * (i + 3), '236,214,170', '201,172,118', '120,104,82')     // warm brass
+      : billow(7919 * (i + 3), '238,230,212', '196,186,166', '104,100,96'));   // pale ash
+    const HAZE = [haze('206,192,162'), haze('176,166,148')];
+    let dustRaf = 0, dustLast = 0, T = 0, frame = 0, src0 = [], words = [], puffs = [], stackTimers = [], wordTimers = [], cw = 0, ch = 0, dpr = 1;
     // Stack mouths in the slide's own (unscaled) layout units. Measured relative to the
     // factory drawing, then mapped onto its layout box, so entrance transforms or stage
     // scaling at the moment of measurement can't misplace the plumes.
@@ -158,7 +186,7 @@
     };
     function sizeCanvas() {
       const W = titleSlide.clientWidth, H = titleSlide.clientHeight, r = titleSlide.getBoundingClientRect();
-      dpr = .5 * (W ? r.width / W : 1);   // soft puffs need no resolution: half-res canvas keeps fill cost low
+      dpr = .42 * (W ? r.width / W : 1);   // soft puffs need little resolution: a reduced-res canvas keeps fill cost low
       if (W !== cw || H !== ch) {
         cw = W; ch = H;
         plume.width = Math.round(cw * dpr); plume.height = Math.round(ch * dpr); plume.style.width = cw + 'px'; plume.style.height = ch + 'px';
@@ -166,41 +194,55 @@
     }
     // Fade everything out before it reaches the title block (top ~35% of the slide).
     const ceiling = y => Math.max(0, Math.min(1, (y - ch * ceil0) / (ch * .14)));
-    function spawnPuff(si, w) {
-      puffs.push({ si, x: (Math.random() - .5) * w * .006, y: w * .003, age: 0,
-        life: 4.2 + Math.random() * 1.8, vy: w * (.03 + Math.random() * .014), vx: w * (.006 + Math.random() * .01) + (Math.random() - .5) * w * .012,
-        wind: w * (.012 + Math.random() * .01), r0: w * (.012 + Math.random() * .006), r1: w * (.07 + Math.random() * .05),
-        peak: .1 + Math.random() * .1, spr: SPRITES[Math.random() < .55 ? 0 : (Math.random() < .65 ? 1 : 2)], wob: Math.random() * 6.28 });
+    // Divergence-free swirl (curl of a drifting stream function): gives the plume eddies without noise textures.
+    const curl = (x, y, t, w) => {
+      const X = x / w, Y = y / w, p = 9 * X + .5 * t, q = 7 * Y - .4 * t, r = 14 * X - 11 * Y + .7 * t;
+      return [w * (-.0105 * Math.sin(p) * Math.sin(q) - .0099 * Math.cos(r)), -w * (.0135 * Math.cos(p) * Math.cos(q) + .0126 * Math.cos(r))];
+    };
+    // Three layers per stack: a dense core at the mouth, the main billows, and a faint haze that spreads higher up.
+    const KINDS = {
+      core:   { every: .075, life: [1.3, .7], r0: [.006, .003], r1: [.026, .012], peak: [.42, .16], vy: [.04, .012], spin: .5 },
+      billow: { every: .15, life: [4.6, 1.8], r0: [.012, .006], r1: [.062, .042], peak: [.26, .12], vy: [.033, .012], spin: .25 },
+      haze:   { every: .55, life: [6.2, 1.6], r0: [.03, .01], r1: [.13, .05], peak: [.075, .035], vy: [.026, .008], spin: 0 },
+    };
+    const R = ([a, b]) => a + Math.random() * b;
+    function spawnPuff(si, w, kind) {
+      const K = KINDS[kind];
+      puffs.push({ si, kind, x: (Math.random() - .5) * w * .006, y: w * .002, age: 0, life: R(K.life),
+        vy: w * R(K.vy), vx: w * (.004 + Math.random() * .008), wind: w * (.012 + Math.random() * .01),
+        r0: w * R(K.r0), r1: w * R(K.r1), peak: R(K.peak), rot: Math.random() * 6.283, spin: (Math.random() - .5) * K.spin,
+        spr: kind === 'haze' ? HAZE[Math.random() < .6 ? 0 : 1] : BILLOWS[Math.floor(Math.random() * BILLOWS.length)] });
     }
     function spawnWord(si, w) {
+      const shown = new Set(words.map(p => p.el.textContent));
+      const pool = WORDS.filter(t => !shown.has(t));
       const el = document.createElement('span');
-      el.textContent = WORDS[Math.floor(Math.random() * WORDS.length)];
+      el.textContent = pool[Math.floor(Math.random() * pool.length)];
       dust.append(el);
-      words.push({ el, si, x: (Math.random() - .5) * w * .01, y: -w * .02, age: 0,
-        life: 4 + Math.random() * 1.5, vy: w * (.028 + Math.random() * .01), vx: w * (.008 + Math.random() * .008),
-        wind: w * (.012 + Math.random() * .008), phase: Math.random() * 6.28, amp: w * (.003 + Math.random() * .004),
-        s0: .8 + Math.random() * .3, peak: .6 + Math.random() * .35 });
+      words.push({ el, si, x: (Math.random() - .5) * w * .008, y: -w * .028, age: 0,
+        life: 4.4 + Math.random() * 1.2, vy: w * (.03 + Math.random() * .006), vx: w * (.006 + Math.random() * .006),
+        wind: w * (.012 + Math.random() * .006), s0: .85 + Math.random() * .2, peak: .78 + Math.random() * .2 });
+    }
+    function move(p, dt, w, src, follow) {
+      const k = p.age / p.life, m = src[p.si] || src[0];
+      const [ux, uy] = curl(m[0] + p.x, m[1] + p.y, T, w), turb = follow * Math.min(1, k * 3);   // calm at the mouth, eddying higher up
+      p.y -= p.vy * dt * (1 - k * .55) - uy * turb * dt;
+      p.x += (p.vx + p.wind * k + ux * turb) * dt;
     }
     function step(dt, w, src) {
+      T += dt;
       src.forEach((m, i) => {
-        stackTimers[i] = (stackTimers[i] ?? Math.random() * .05) - dt;
-        while (stackTimers[i] <= 0) { spawnPuff(i, w); stackTimers[i] += .07 + Math.random() * .04; }
+        const tm = stackTimers[i] || (stackTimers[i] = { core: Math.random() * .05, billow: Math.random() * .1, haze: Math.random() * .3 });
+        for (const kind in KINDS) { tm[kind] -= dt; while (tm[kind] <= 0) { spawnPuff(i, w, kind); tm[kind] += KINDS[kind].every * (.75 + Math.random() * .5); } }
+        // Words: each stack releases its own, spaced out so they never stack on top of one another.
+        wordTimers[i] = (wordTimers[i] ?? .3 + i * .55 + Math.random() * .4) - dt;
+        if (wordTimers[i] <= 0) {
+          const crowded = words.length >= MAX_WORDS || words.some(p => { const n = src[p.si] || src[0]; return Math.abs(n[1] + p.y - m[1] + w * .028) < w * .04 && Math.abs(n[0] + p.x - m[0]) < w * .13; });
+          if (crowded) wordTimers[i] = .2; else { spawnWord(i, w); wordTimers[i] = 1.45 + Math.random() * .6; }
+        }
       });
-      puffs = puffs.filter(p => {
-        p.age += dt; const k = p.age / p.life; if (k >= 1) return false;
-        p.y -= p.vy * dt * (1 - k * .55);
-        p.x += (p.vx + p.wind * k + Math.sin(p.age * 1.3 + p.wob) * w * .003) * dt;
-        return true;
-      });
-      wordSpawn -= dt;
-      if (wordSpawn <= 0 && words.length < MAX_WORDS && src.length) { spawnWord(Math.floor(Math.random() * src.length), w); wordSpawn = .42 + Math.random() * .25; }
-      words = words.filter(p => {
-        p.age += dt; const k = p.age / p.life;
-        if (k >= 1) { p.el.remove(); return false; }
-        p.y -= p.vy * dt * (1 - k * .55);
-        p.x += (p.vx + p.wind * k + Math.cos(p.age * 1.1 + p.phase) * p.amp) * dt;
-        return true;
-      });
+      puffs = puffs.filter(p => { p.age += dt; if (p.age >= p.life) return false; p.rot += p.spin * dt; move(p, dt, w, src, 1); return true; });
+      words = words.filter(p => { p.age += dt; if (p.age >= p.life) { p.el.remove(); return false; } move(p, dt, w, src, .7); return true; });
     }
     function draw(w, src = mouths()) {
       if (!src.length) return;
@@ -209,24 +251,29 @@
       for (const p of puffs) {
         const k = p.age / p.life, r = p.r0 + (p.r1 - p.r0) * Math.sqrt(k);
         const m = src[p.si] || src[0], X = m[0] + p.x, Y = m[1] + p.y;
-        const a = p.peak * Math.min(1, k / .06) * (1 - k) * ceiling(Y);
+        // Dense near the stack, thinning as it rises and spreads.
+        const a = p.peak * Math.min(1, k / .08) * Math.pow(1 - k, 1.4) * ceiling(Y);
         if (a < .004) continue;
         pctx.globalAlpha = a;
-        pctx.drawImage(p.spr, X - r, Y - r, r * 2, r * 2);
+        const c = Math.cos(p.rot) * dpr, s = Math.sin(p.rot) * dpr;
+        pctx.setTransform(c, s, -s, c, X * dpr, Y * dpr);
+        pctx.drawImage(p.spr, -r, -r, r * 2, r * 2);
       }
+      pctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       pctx.globalAlpha = 1;
       for (const p of words) {
         const k = p.age / p.life;
         const m = src[p.si] || src[0], X = m[0] + p.x, Y = m[1] + p.y;
-        const fade = Math.min(1, k / .15) * (1 - Math.max(0, (k - .5) / .5)) * ceiling(Y);
+        const fade = Math.min(1, k / .15) * (1 - Math.max(0, (k - .55) / .45)) * ceiling(Y);
         p.el.style.opacity = (fade * p.peak).toFixed(3);
-        p.el.style.transform = `translate(${X.toFixed(1)}px, ${Y.toFixed(1)}px) translate(-50%, -50%) scale(${(p.s0 * (1 + k * .5)).toFixed(3)})`;
+        p.el.style.transform = `translate(${X.toFixed(1)}px, ${Y.toFixed(1)}px) translate(-50%, -50%) scale(${(p.s0 * (1 + k * .45)).toFixed(3)})`;
       }
     }
     function dustFrame(now) {
       const dt = Math.min(.05, (now - dustLast) / 1000); dustLast = now;
       sizeCanvas();
-      const w = cw, src = mouths();
+      if (!src0.length || ++frame % 30 === 0) src0 = mouths();   // stacks don't move; re-measure occasionally (resize)
+      const w = cw, src = src0;
       step(dt, w, src); draw(w, src);
       dustRaf = requestAnimationFrame(dustFrame);
     }
@@ -244,16 +291,18 @@
         prewarm(4.2);
         words.forEach(p => p.el.remove()); words = [];
         draw(cw);
-        const w = cw, h = ch;
-        [['foundation models', .4, .5, .55], ['eye tracking', .6, .47, .5], ['Jev', .47, .43, .45], ['embeddings', .64, .41, .35], ['mitotic figures', .7, .52, .5]]
-          .forEach(([t, x, y, o]) => { const el = document.createElement('span'); el.textContent = t; el.style.opacity = o; el.style.transform = `translate(${x * w}px, ${y * h}px) translate(-50%, -50%)`; dust.append(el); });
+        const w = cw, src = mouths();
+        if (!src.length) return;
+        // Words placed relative to their stack so they sit inside the frozen plumes.
+        [['Jev', 0, .015, -.045, .7], ['foundation models', 0, .035, -.075, .55], ['eye tracking', 1, .01, -.05, .7], ['embeddings', 1, .03, -.11, .45], ['mitotic figures', 2, .045, -.1, .6]]
+          .forEach(([t, si, dx, dy, o]) => { const m = src[si] || src[0], el = document.createElement('span'); el.textContent = t; el.style.opacity = o; el.style.transform = `translate(${m[0] + dx * w}px, ${m[1] + dy * w}px) translate(-50%, -50%)`; dust.append(el); });
         return;
       }
       prewarm(2.4);   // plumes are already billowing on the first visible frame
       dustLast = performance.now();
       dustRaf = requestAnimationFrame(dustFrame);
     }
-    function stopDust() { cancelAnimationFrame(dustRaf); dustRaf = 0; words = []; puffs = []; stackTimers = []; wordSpawn = 0; dust.replaceChildren(); }
+    function stopDust() { cancelAnimationFrame(dustRaf); dustRaf = 0; words = []; puffs = []; stackTimers = []; wordTimers = []; T = 0; src0 = []; dust.replaceChildren(); }
     reduced.addEventListener('change', () => { if (!titleSlide.hidden) startDust(); });
     return { start: startDust, stop: stopDust };
   }
@@ -325,29 +374,26 @@
   }
   renderFoundation(0);
 
-  // Jev race: streamed text vs one typed decision (CP playJevRace).
-  const jev = document.getElementById('jev');
-  const jevText = 'Chronic active gastritis raises concern for Helicobacter pylori. Organisms are not always visible on H&E, particularly when sparse, so a Warthin-Starry or immunohistochemical stain would be reasonable to';
-  const jevValue = 'order_warthin_starry: true\nconfidence: 0.94\nroute_to: "GI desk"';
-  let jevRaf = 0;
-  function playJevRace() {
-    cancelAnimationFrame(jevRaf);
-    const llmOut = jev.querySelector('[data-out="llm"]'), jevOut = jev.querySelector('[data-out="jev"]');
-    const llmClock = jev.querySelector('[data-clock="llm"]'), jevClock = jev.querySelector('[data-clock="jev"]');
-    const llmMs = 7000, jevMs = 180;
-    if (reduced.matches) { llmOut.textContent = jevText + '…'; llmClock.textContent = 'still going'; jevOut.textContent = jevValue; jevClock.textContent = '0.18 s'; return; }
-    const t0 = performance.now();
-    const frame = now => {
-      const t = now - t0;
-      llmOut.textContent = jevText.slice(0, Math.floor(jevText.length * Math.min(1, t / llmMs))) + (t < llmMs ? '▌' : '…');
-      llmClock.textContent = t < llmMs ? `${(t / 1000).toFixed(1)} s` : 'still going';
-      jevOut.textContent = t >= jevMs ? jevValue : '';
-      jevClock.textContent = `${(Math.min(t, jevMs) / 1000).toFixed(2)} s`;
-      if (t < llmMs && !jev.hidden) jevRaf = requestAnimationFrame(frame);
-    };
-    jevRaf = requestAnimationFrame(frame);
+  // HP exposure history: one question over a synthetic note; each exposure links back to its source sentence.
+  const hpSlide = document.getElementById('hp-history');
+  const hpTimers = [];
+  const hpSources = n => hpSlide.querySelectorAll(`[data-hit="${n}"]`);
+  function resetHp() { hpTimers.splice(0).forEach(clearTimeout); delete hpSlide.dataset.revealed; hpSlide.querySelectorAll('.is-on, .is-focus').forEach(x => x.classList.remove('is-on', 'is-focus')); }
+  function revealHp() {
+    if (hpSlide.dataset.revealed === 'true') return;
+    hpSlide.dataset.revealed = 'true';
+    const hits = [...hpSlide.querySelectorAll('.hp-hit')];
+    hits.forEach((li, i) => {
+      const on = () => hpSources(li.dataset.hit).forEach(x => x.classList.add('is-on'));
+      if (reduced.matches) on(); else hpTimers.push(setTimeout(on, 250 + i * 260));
+    });
   }
-  jev.querySelector('.jev-replay').addEventListener('click', playJevRace);
+  hpSlide.querySelector('.hp-run').addEventListener('click', e => { e.currentTarget.blur(); revealHp(); });
+  hpSlide.querySelectorAll('[data-hit]').forEach(x => {
+    const focus = on => { if (hpSlide.dataset.revealed === 'true') hpSources(x.dataset.hit).forEach(y => y.classList.toggle('is-focus', on)); };
+    x.addEventListener('pointerenter', () => focus(true));
+    x.addEventListener('pointerleave', () => focus(false));
+  });
 
   // Lung case: one lung-case.js instance serves two slides; jump the tour to the slide's step.
   function lungStep(step) {
@@ -403,7 +449,7 @@
 
     if (el === navier || el === bench) playReveal(el);
     if (el === fSlide) playFoundation();
-    if (el === jev && prevReal !== jev) playJevRace();
+    if (el === hpSlide && prevReal !== hpSlide) resetHp();
     if (el.id === 'lung-case') lungStep(Number(logical.dataset.lungStep || 0));
     if (scenes.has(el)) {
       el.classList.remove('is-drawn', 'is-settled');
@@ -445,6 +491,7 @@
       if (e.repeat) return;
       // Camp Pods: first forward press on the cluster slide reveals the cancer clusters.
       if (fwd && el.id === 'cluster-embeddings' && el.dataset.revealed !== 'true') { document.dispatchEvent(new Event('cluster-cancer-reveal')); return; }
+      if (fwd && el === hpSlide && el.dataset.revealed !== 'true') { revealHp(); return; }
       fwd ? next() : prev();
     } else if (k === 'Home') { e.preventDefault(); goTo(0); }
     else if (k === 'End') { e.preventDefault(); goTo(slides.length - 1); }
@@ -455,12 +502,13 @@
     }
   }, true);
 
-  const INTERACTIVE = 'a, button, input, textarea, select, video, canvas, label, [role="dialog"], .lung-workspace, .cluster-interactive, .js-stage, .js-panel, .cf-shelf, .cf-result, .input-vm-stage, .openseadragon-container, .notes-panel';
+  const INTERACTIVE = 'a, button, input, textarea, select, video, canvas, label, [role="dialog"], .lung-workspace, .cluster-interactive, .js-stage, .js-panel, .cf-shelf, .cf-result, .hp-results, .input-vm-stage, .openseadragon-container, .notes-panel';
   deck.addEventListener('click', e => {
     if (!(e.target instanceof Element) || e.target.closest(INTERACTIVE)) return;
     if (getSelection && String(getSelection()).length) return;
     const el = real(slides[current]);
     if (el.id === 'cluster-embeddings' && el.dataset.revealed !== 'true') { document.dispatchEvent(new Event('cluster-cancer-reveal')); return; }
+    if (el === hpSlide && el.dataset.revealed !== 'true') { revealHp(); return; }
     next();
   });
 

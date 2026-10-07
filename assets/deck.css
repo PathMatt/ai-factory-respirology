@@ -80,7 +80,7 @@ body { background: #030c16; font-family: var(--sans); -webkit-font-smoothing: an
 :is(#title, #closing) .dust { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
 :is(#title, #closing) .dust .plume { position: absolute; left: 0; top: 0; pointer-events: none; }
 :is(#title, #closing) .dust span { position: absolute; left: 0; top: 0; white-space: nowrap; will-change: transform, opacity; opacity: 0;
-  font: 500 1.05cqw/1 var(--mono); color: #fbf6ea; letter-spacing: .02em; text-shadow: 0 0 .5cqw rgba(6, 24, 42, .55); }
+  font: 500 1.05cqw/1 var(--mono); color: #fffaf0; letter-spacing: .02em; text-shadow: 0 0 .25cqw rgba(6, 24, 42, .85), 0 0 .7cqw rgba(6, 24, 42, .6); }
 #title .title-copy { position: absolute; left: 0; right: 0; top: 17%; text-align: center; z-index: 2; }
 #title h1 { margin: 0; font: 600 4.8cqw/1.05 var(--sans); letter-spacing: -.045em; color: #f4efe2; text-shadow: 0 0 2.4cqw var(--navy), 0 0 1.2cqw var(--navy); }
 #title .title-copy p { margin: 1.8cqw 0 0; font: 500 1.25cqw/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--brass-2); }
@@ -171,14 +171,6 @@ body { background: #030c16; font-family: var(--sans); -webkit-font-smoothing: an
 @keyframes ex-in { to { opacity: 1; transform: none; } }
 
 /* Jev */
-.jev-figs { position: absolute; left: 9.5%; top: 25%; width: 38%; display: grid; gap: 2.4cqw; }
-.jev-fig { margin: 0; border-top: 2px solid var(--ink); padding-top: .9cqw; }
-.jev-fig b { display: block; font: 700 4.6cqw/1 var(--sans); letter-spacing: -.045em; color: #a54a46; }
-.jev-fig.fast b { color: #617f75; }
-.jev-fig span { display: block; margin-top: .5cqw; font: 400 1.1cqw/1.2 var(--mono); color: var(--muted); }
-.jev-vendor { margin: 0; font: 500 .85cqw/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--brass); }
-.jev-race { top: 25%; }
-.jev-lane, .jev-prompt, .jev-out { font-family: var(--mono); }
 
 /* Jev live demos */
 .live-link { position: absolute; right: 1.8%; top: 8.2%; z-index: 31; font: 400 .75cqw/1 var(--mono); color: #8b8b84; text-decoration: none; border-bottom: 1px solid transparent; }
@@ -212,9 +204,47 @@ body { background: #030c16; font-family: var(--sans); -webkit-font-smoothing: an
 
 #jev-scan .js-restart { right: 7%; }
 
-/* Head-tracking slide: Matt's video is the large component */
-#head-input .input-video-stage { left: 50%; right: auto; top: 24%; bottom: auto; width: 70cqw; height: 39.4cqw; transform: translateX(-50%); }
-#head-input .input-video-inset { width: 27%; right: 1.2%; bottom: 2.5%; }
+/* Head-tracking slide: Matt's video is the large component; the mouse baseline uses the same frame */
+:is(#head-input, #mouse-input) .input-video-stage { left: 50%; right: auto; top: 24%; bottom: auto; width: 70cqw; height: 39.4cqw; transform: translateX(-50%); }
+:is(#head-input, #mouse-input) .input-video-inset { width: 27%; right: 1.2%; bottom: 2.5%; }
 
 #title .title-copy p.title-role { margin-top: .9cqw; }
 #closing .closing-name { margin-top: 2cqw; }
+
+/* HP exposure history (replaces the Jev race): synthetic note on the left, one question and its hits on the right */
+#hp-history { --hp-red: #a54a46; --hp-tone: #617f75; }
+#hp-history .hp-note { position: absolute; left: 9.5%; top: 22%; width: 47%; margin: 0; padding: 1.4cqw 1.7cqw; background: #fff; border: 1px solid #16161626; font: 400 1.13cqw/1.62 var(--sans); color: #2a2a26; }
+#hp-history .hp-note p { margin: 0 0 .75cqw; }
+#hp-history .hp-note p:last-child { margin-bottom: 0; }
+#hp-history .hp-note .hp-note-h { margin-bottom: .6cqw; font: 500 .8cqw/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--brass); }
+#hp-history .hp-hl { border-radius: .15cqw; box-decoration-break: clone; -webkit-box-decoration-break: clone; transition: background-color .45s ease, box-shadow .2s ease; }
+#hp-history .hp-hl.is-on { background: rgba(201, 168, 106, .26); }
+#hp-history .hp-hl.is-on[data-hit="1"] { background: rgba(165, 74, 70, .2); box-shadow: inset 0 -2px 0 var(--hp-red); }
+#hp-history .hp-hl.is-on::after { content: attr(data-hit); display: inline-block; margin-left: .3cqw; padding: 0 .3cqw; font: 600 .7cqw/1.35 var(--mono); vertical-align: .25cqw; color: #fff; background: var(--brass); border-radius: .2cqw; }
+#hp-history .hp-hl.is-on[data-hit="1"]::after { background: var(--hp-red); }
+#hp-history .hp-hl.is-on.is-focus { box-shadow: 0 0 0 2px var(--ink); }
+#hp-history .hp-panel { position: absolute; left: 60%; right: 7%; top: 22%; }
+#hp-history .hp-query { display: flex; align-items: center; gap: 1cqw; padding: .8cqw 1cqw; border: 1px solid var(--ink); background: #fff; font: 400 1.05cqw/1.3 var(--mono); color: var(--ink); }
+#hp-history .hp-query-text { flex: 1; }
+#hp-history .hp-run { font: 500 .95cqw/1 var(--sans); padding: .45cqw 1.1cqw; background: var(--hp-red); border: 1px solid var(--hp-red); color: #fafaf8; cursor: pointer; }
+#hp-history[data-revealed="true"] .hp-run { background: #fff; color: var(--hp-red); }
+#hp-history .hp-results { list-style: none; margin: 1.6cqw 0 0; padding: 0; display: grid; gap: .9cqw; }
+#hp-history .hp-hit { display: grid; grid-template-columns: 1.7cqw 1fr auto; align-items: center; gap: .9cqw; padding-top: .8cqw; border-top: 1px solid #16161626; opacity: 0; transform: translateY(.6cqw); }
+#hp-history .hp-hit i { font: 600 .8cqw/1.7cqw var(--mono); font-style: normal; text-align: center; color: #fff; background: var(--brass); border-radius: .2cqw; }
+#hp-history .hp-hit b { display: block; font: 500 1.25cqw/1.2 var(--sans); color: var(--ink); }
+#hp-history .hp-hit span { display: block; margin-top: .2cqw; font: 400 .85cqw/1.2 var(--mono); color: #66665f; }
+#hp-history .hp-hit em { font: 500 .75cqw/1 var(--mono); font-style: normal; letter-spacing: .12em; text-transform: uppercase; color: #8a8a84; }
+#hp-history .hp-hit.primary { border-top: 2px solid var(--hp-red); }
+#hp-history .hp-hit.primary i { background: var(--hp-red); }
+#hp-history .hp-hit.primary b { font-size: 1.7cqw; color: var(--hp-red); }
+#hp-history .hp-hit.primary em { color: var(--hp-red); }
+#hp-history[data-revealed="true"] .hp-hit { opacity: 1; transform: none; transition: opacity .4s ease, transform .4s ease; }
+#hp-history[data-revealed="true"] .hp-hit:nth-child(2) { transition-delay: .26s; }
+#hp-history[data-revealed="true"] .hp-hit:nth-child(3) { transition-delay: .52s; }
+#hp-history[data-revealed="true"] .hp-hit:nth-child(4) { transition-delay: .78s; }
+#hp-history[data-revealed="true"] .hp-hit:nth-child(5) { transition-delay: 1.04s; }
+@media (prefers-reduced-motion: reduce) { #hp-history .hp-hit, #hp-history .hp-hl { transition: none !important; } }
+
+/* L4E (CP #41): Camp Pods places its subtitle at 17%; drop it below this deck's heading */
+#l4e .l4e-sub { top: 18.5%; }
+#l4e .l4e-left, #l4e .l4e-right { top: 23.5%; }
